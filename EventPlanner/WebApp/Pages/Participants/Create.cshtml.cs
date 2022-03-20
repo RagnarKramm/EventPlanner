@@ -26,6 +26,7 @@ namespace WebApp.Pages.Participants
             _context = context;
         }
         
+        public string? ErrorMessage { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int eventId, int participantTypeId)
         {
@@ -42,8 +43,19 @@ namespace WebApp.Pages.Participants
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
+            ParticipantType = await _context.ParticipantTypes.FirstAsync(type => type.Id == Participant.ParticipantTypeId);
+            Event = await _context.Events.FirstAsync(item => item.Id == Participant.EventId);
+
+            PaymentOptionsSelectList = new SelectList(_context.PaymentOptions, nameof(PaymentOption.Id), nameof(PaymentOption.Name));
+            
             if (!ModelState.IsValid)
             {
+                return Page();
+            }
+            
+            if (Participant.ParticipantTypeId == 1 && Participant.AdditionalInformation.Length > 1500)
+            {
+                ErrorMessage = "Kirjelduse limiit on 1500 märki, palun sisestage vähem kui 1500 märki!";
                 return Page();
             }
             

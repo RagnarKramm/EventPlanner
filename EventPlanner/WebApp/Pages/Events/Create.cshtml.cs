@@ -39,8 +39,7 @@ namespace WebApp.Pages.Events
             
             if (Event!.HappeningAt.CompareTo(DateTime.Now) < 0)
             {
-                ErrorMessage = "Selected time is in the past, " +
-                               "please enter a valid time for your event!";
+                ErrorMessage = "Valitud aeg on minevikus, palun valige aeg mis on veel ees!";
                 return Page();
             }
 

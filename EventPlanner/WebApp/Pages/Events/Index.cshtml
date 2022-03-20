@@ -1,15 +1,14 @@
 @page
-@using WebApp.Domain
 @model WebApp.Pages.Events.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Avaleht";
 }
 
-<h1>EventPlanner</h1>
+<h1>Ürituste haldamise süsteem</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Lisa uus üritus</a>
 </p>
 
 <div class="container">
@@ -19,7 +18,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <p class="text-center">Incoming events</p>
+                    <p class="text-center">Tulevased üritused</p>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,10 +30,10 @@
                                 <a asp-page="./Details" asp-route-id="@item.Id">@item.Name</a>
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Location)
+                                @item.HappeningAt.ToString("dd.MM.yyyy")
                             </td>
                             <td>
-                                @item.HappeningAt.ToString("dd.MM.yyyy")
+                                @Html.DisplayFor(modelItem => item.Location)
                             </td>
                             @{
                                 var participantCount = 0;
@@ -66,8 +65,8 @@
                                     </div>
                                 </div>
                                 
-                                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                                <a asp-page="./Edit" asp-route-id="@item.Id">Muuda</a> |
+                                <a asp-page="./Delete" asp-route-id="@item.Id">Kustuta</a>
                             </td>
                         </tr>
                     }
@@ -83,7 +82,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <p class="text-center">Past events</p>
+                        <p class="text-center">Toimunud üritused</p>
                     </tr>
                     </thead>
                     <tbody>
@@ -96,10 +95,10 @@
                                     <a asp-page="./Details" asp-route-id="@item.Id">@item.Name</a>
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Location)
+                                    @item.HappeningAt.ToString("dd.MM.yyyy")
                                 </td>
                                 <td>
-                                    @item.HappeningAt.ToString("dd.MM.yyyy")
+                                    @Html.DisplayFor(modelItem => item.Location)
                                 </td>
                                 @{
                                 var participantCount = 0;
