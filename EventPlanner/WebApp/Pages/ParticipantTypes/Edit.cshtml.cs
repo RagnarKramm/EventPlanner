@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace WebApp.Pages.ParticipantTypes
         }
 
         [BindProperty]
-        public ParticipantType ParticipantType { get; set; }
+        public ParticipantType? ParticipantType { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -49,7 +49,7 @@ namespace WebApp.Pages.ParticipantTypes
                 return Page();
             }
 
-            _context.Attach(ParticipantType).State = EntityState.Modified;
+            _context.Attach(ParticipantType!).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace WebApp.Pages.ParticipantTypes
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ParticipantTypeExists(ParticipantType.Id))
+                if (!ParticipantTypeExists(ParticipantType!.Id))
                 {
                     return NotFound();
                 }

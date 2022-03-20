@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,7 @@ namespace WebApp.Pages.ParticipantTypes
         }
 
         [BindProperty]
-        public ParticipantType ParticipantType { get; set; }
+        public ParticipantType? ParticipantType { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -36,7 +36,7 @@ namespace WebApp.Pages.ParticipantTypes
                 return Page();
             }
 
-            _context.ParticipantTypes.Add(ParticipantType);
+            _context.ParticipantTypes.Add(ParticipantType!);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

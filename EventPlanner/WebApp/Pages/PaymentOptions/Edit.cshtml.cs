@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace WebApp.Pages.PaymentOptions
         }
 
         [BindProperty]
-        public PaymentOption PaymentOption { get; set; }
+        public PaymentOption? PaymentOption { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -49,7 +49,7 @@ namespace WebApp.Pages.PaymentOptions
                 return Page();
             }
 
-            _context.Attach(PaymentOption).State = EntityState.Modified;
+            _context.Attach(PaymentOption!).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace WebApp.Pages.PaymentOptions
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PaymentOptionExists(PaymentOption.Id))
+                if (!PaymentOptionExists(PaymentOption!.Id))
                 {
                     return NotFound();
                 }

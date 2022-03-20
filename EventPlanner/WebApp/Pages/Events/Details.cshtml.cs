@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace WebApp.Pages.Events
             _context = context;
         }
 
-        public Event Event { get; set; }
+        public Event? Event { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

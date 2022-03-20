@@ -14,31 +14,31 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Participant[0].ParticipantLine1)
+                @Html.DisplayNameFor(model => model.Participant![0].ParticipantLine1)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Participant[0].ParticipantLine2)
+                @Html.DisplayNameFor(model => model.Participant![0].ParticipantLine2)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Participant[0].ParticipantLine3)
+                @Html.DisplayNameFor(model => model.Participant![0].ParticipantLine3)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Participant[0].AdditionalInformation)
+                @Html.DisplayNameFor(model => model.Participant![0].AdditionalInformation)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Participant[0].Event)
+                @Html.DisplayNameFor(model => model.Participant![0].Event)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Participant[0].ParticipantType)
+                @Html.DisplayNameFor(model => model.Participant![0].ParticipantType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Participant[0].PaymentOption)
+                @Html.DisplayNameFor(model => model.Participant![0].PaymentOption)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Participant) {
+@foreach (var item in Model.Participant!) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ParticipantLine1)
@@ -53,13 +53,13 @@
                 @Html.DisplayFor(modelItem => item.AdditionalInformation)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Event.Id)
+                @Html.DisplayFor(modelItem => item.Event!.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ParticipantType.Id)
+                @Html.DisplayFor(modelItem => item.ParticipantType!.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PaymentOption.Id)
+                @Html.DisplayFor(modelItem => item.PaymentOption!.Id)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

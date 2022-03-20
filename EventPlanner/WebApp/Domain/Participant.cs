@@ -14,15 +14,17 @@ public class Participant : BaseEntity
     public string ParticipantLine3 { get; set; } = default!;
     
     [MaxLength(5000)]
+    [Display(Name = "Lisainfo")]
     public string AdditionalInformation { get; set; } = default!;
 
     public int EventId { get; set; }
-    public Event Event { get; set; } = default!;
+    public Event? Event { get; set; }
 
     public int ParticipantTypeId { get; set; }
-    public ParticipantType ParticipantType { get; set; } = default!;
+    public ParticipantType? ParticipantType { get; set; }
 
+    [Display(Name = "Maksmise viis")]
     public int PaymentOptionId { get; set; }
-    public PaymentOption PaymentOption { get; set; } = default!;
+    public PaymentOption? PaymentOption { get; set; }
 
 }

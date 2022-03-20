@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,17 +27,17 @@ namespace WebApp.Pages.Events
         }
 
         [BindProperty]
-        public Event Event { get; set; }
+        public Event? Event { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid && Event == null)
             {
                 return Page();
             }
             
-            if (Event.HappeningAt.CompareTo(DateTime.Now) < 0)
+            if (Event!.HappeningAt.CompareTo(DateTime.Now) < 0)
             {
                 ErrorMessage = "Selected time is in the past, " +
                                "please enter a valid time for your event!";

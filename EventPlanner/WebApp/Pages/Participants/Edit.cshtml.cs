@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +14,15 @@ namespace WebApp.Pages.Participants
 {
     public class EditModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly WebApp.DAL.AppDbContext _context;
 
-        public EditModel(AppDbContext context)
+        public EditModel(WebApp.DAL.AppDbContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public Participant Participant { get; set; }
+        public Participant? Participant { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -55,7 +55,7 @@ namespace WebApp.Pages.Participants
                 return Page();
             }
 
-            _context.Attach(Participant).State = EntityState.Modified;
+            _context.Attach(Participant!).State = EntityState.Modified;
 
             try
             {
@@ -63,7 +63,7 @@ namespace WebApp.Pages.Participants
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ParticipantExists(Participant.Id))
+                if (!ParticipantExists(Participant!.Id))
                 {
                     return NotFound();
                 }

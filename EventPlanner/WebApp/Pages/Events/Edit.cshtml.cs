@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace WebApp.Pages.Events
         }
 
         [BindProperty]
-        public Event Event { get; set; }
+        public Event? Event { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -49,7 +49,7 @@ namespace WebApp.Pages.Events
                 return Page();
             }
 
-            _context.Attach(Event).State = EntityState.Modified;
+            _context.Attach(Event!).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace WebApp.Pages.Events
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EventExists(Event.Id))
+                if (!EventExists(Event!.Id))
                 {
                     return NotFound();
                 }

@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace WebApp.Pages.ParticipantTypes
             _context = context;
         }
 
-        public IList<ParticipantType> ParticipantType { get;set; }
+        public IList<ParticipantType>? ParticipantType { get;set; }
 
         public async Task OnGetAsync()
         {

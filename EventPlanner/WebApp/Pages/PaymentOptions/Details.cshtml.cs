@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace WebApp.Pages.PaymentOptions
             _context = context;
         }
 
-        public PaymentOption PaymentOption { get; set; }
+        public PaymentOption? PaymentOption { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

@@ -21,4 +21,12 @@
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Participants\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Participants\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Participants\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Participants\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="DeleteThis\Create.cshtml" />
+    </ItemGroup>
+
 </Project>

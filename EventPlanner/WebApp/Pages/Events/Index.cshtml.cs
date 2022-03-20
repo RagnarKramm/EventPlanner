@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +20,13 @@ namespace WebApp.Pages.Events
             _context = context;
         }
 
-        public IList<Event> Event { get;set; }
+        public IList<Event>? Event { get;set; }
+        public IList<ParticipantType>? ParticipantTypes { get; set; }
 
         public async Task OnGetAsync()
         {
             Event = await _context.Events.ToListAsync();
+            ParticipantTypes = await _context.ParticipantTypes.ToListAsync();
         }
     }
 }

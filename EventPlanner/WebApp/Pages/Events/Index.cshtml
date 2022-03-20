@@ -14,6 +14,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm">
+            <div class="table-responsive">
             <table class="table">
                 <thead>
                 <tr>
@@ -21,12 +22,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (var item in Model.Event) {
+                @foreach (var item in Model.Event!) {
                     @if (item.HappeningAt.CompareTo(DateTime.Now) > 0)
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Name)
+                                <a asp-page="./Details" asp-route-id="@item.Id">@item.Name</a>
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Location)
@@ -35,8 +36,19 @@
                                 @item.HappeningAt.ToString("dd.MM.yyyy")
                             </td>
                             <td>
+                                <div class="dropdown show">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Lisa osaleja
+                                    </a>
+                                                                
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        @foreach(var type in Model.ParticipantTypes!){
+                                        <a class="dropdown-item" asp-page="/Participants/Create" asp-route-eventId="@item.Id" asp-route-participantTypeId="@type.Id">@type.Name</a>
+                                        }
+                                    </div>
+                                </div>
+                                
                                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
                                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
                             </td>
                         </tr>
@@ -45,38 +57,40 @@
                 
                 </tbody>
             </table>
+            </div>
+
         </div>
         <div class="col-sm">
-            <table class="table">
-                <thead>
-                <tr>
-                    <p class="text-center">Past events</p>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model.Event) {
-                    @if (item.HappeningAt.CompareTo(DateTime.Now) < 0)
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <p class="text-center">Past events</p>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.Event)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Location)
-                            </td>
-                            <td>
-                                @item.HappeningAt.ToString("dd.MM.yyyy")
-                            </td>
-                            <td>
-                                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
+                        @if (item.HappeningAt.CompareTo(DateTime.Now) < 0)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-page="./Details" asp-route-id="@item.Id">@item.Name</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Location)
+                                </td>
+                                <td>
+                                    @item.HappeningAt.ToString("dd.MM.yyyy")
+                                </td>
+
+                            </tr>
+                        }
                     }
-                }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
     </div>
 </div>

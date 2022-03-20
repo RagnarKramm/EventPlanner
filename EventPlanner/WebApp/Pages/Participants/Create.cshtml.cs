@@ -1,5 +1,8 @@
-#nullable disable
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,27 +14,30 @@ namespace WebApp.Pages.Participants
 {
     public class CreateModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly WebApp.DAL.AppDbContext _context;
+        [BindProperty] public Participant Participant { get; set; } = default!;
 
-        [BindProperty]
-        public ParticipantType ParticipantType { get; set; }
+        public Event Event { get; set; } = default!;
+        public ParticipantType ParticipantType { get; set; } = default!;
+
+        public SelectList? PaymentOptionsSelectList { get; set; }
         public CreateModel(AppDbContext context)
         {
             _context = context;
         }
+        
 
-        public async Task<IActionResult> OnGetAsync(int? participantTypeId)
+        public async Task<IActionResult> OnGetAsync(int eventId, int participantTypeId)
         {
-            ParticipantType = await _context.ParticipantTypes.FirstOrDefaultAsync(type => type.Id == participantTypeId);
+            ParticipantType = await _context.ParticipantTypes.FirstAsync(type => type.Id == participantTypeId);
+            Event = await _context.Events.FirstAsync(item => item.Id == eventId);
+
+            PaymentOptionsSelectList = new SelectList(_context.PaymentOptions, nameof(PaymentOption.Id), nameof(PaymentOption.Name));
             
-        ViewData["EventId"] = new SelectList(_context.Events, "Id", "Id");
-        ViewData["ParticipantTypeId"] = new SelectList(_context.ParticipantTypes, "Id", "Id");
-        ViewData["PaymentOptionId"] = new SelectList(_context.PaymentOptions, "Id", "Id");
             return Page();
         }
 
-        [BindProperty]
-        public Participant Participant { get; set; }
+        
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -40,6 +46,7 @@ namespace WebApp.Pages.Participants
             {
                 return Page();
             }
+            
 
             _context.Participants.Add(Participant);
             await _context.SaveChangesAsync();

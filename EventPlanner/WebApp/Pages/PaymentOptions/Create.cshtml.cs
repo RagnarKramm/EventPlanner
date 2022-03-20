@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,7 @@ namespace WebApp.Pages.PaymentOptions
         }
 
         [BindProperty]
-        public PaymentOption PaymentOption { get; set; }
+        public PaymentOption? PaymentOption { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -36,7 +36,7 @@ namespace WebApp.Pages.PaymentOptions
                 return Page();
             }
 
-            _context.PaymentOptions.Add(PaymentOption);
+            _context.PaymentOptions.Add(PaymentOption!);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
