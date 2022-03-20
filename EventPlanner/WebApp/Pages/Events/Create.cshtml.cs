@@ -39,7 +39,7 @@ namespace WebApp.Pages.Events
             
             if (Event!.HappeningAt.CompareTo(DateTime.Now) < 0)
             {
-                ErrorMessage = "Valitud aeg on minevikus, palun valige aeg mis on veel ees!";
+                ErrorMessage = "Valitud aeg on minevikus, palun valige aeg mis on veel tulemas!";
                 return Page();
             }
 

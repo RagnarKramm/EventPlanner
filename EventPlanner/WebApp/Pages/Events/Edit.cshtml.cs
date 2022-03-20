@@ -15,6 +15,8 @@ namespace WebApp.Pages.Events
     public class EditModel : PageModel
     {
         private readonly AppDbContext _context;
+        
+        public string ErrorMessage { get; set; } = default!;
 
         public EditModel(AppDbContext context)
         {
@@ -46,6 +48,12 @@ namespace WebApp.Pages.Events
         {
             if (!ModelState.IsValid)
             {
+                return Page();
+            }
+            
+            if (Event!.HappeningAt.CompareTo(DateTime.Now) < 0)
+            {
+                ErrorMessage = "Valitud aeg on minevikus, palun valige aeg mis on veel tulemas!";
                 return Page();
             }
 
