@@ -12,28 +12,73 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event!.Name)
+            @Html.DisplayNameFor(model => model.Event!.Name):
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Event!.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event!.Location)
+            @Html.DisplayNameFor(model => model.Event!.Location):
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Event!.Location)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event!.HappeningAt)
+            @Html.DisplayNameFor(model => model.Event!.HappeningAt):
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Event!.HappeningAt)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event!.Description)
+            @Html.DisplayNameFor(model => model.Event!.Description):
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Event!.Description)
+        </dd>
+        <dt class="col-sm-2">
+            Külalised:
+        </dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Osaleja täisnimi/juriidiline nimi
+                        </th>
+                        <th>
+                            Isikukood/registrikood
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Participant!) {
+                    <tr>
+                        @if (item.ParticipantType!.Name == "Ettevõte")
+                        {
+                            <td> @item.ParticipantLine1</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ParticipantLine2)
+                            </td>
+                        }
+                        else if (item.ParticipantType!.Name == "Eraisik")
+                        {
+                            <td> @item.ParticipantLine1 @item.ParticipantLine2</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ParticipantLine3)
+                            </td>
+                        }
+                        <td>
+                            <a asp-page="/Participants/Details" asp-route-id="@item.Id">Details</a>
+                        </td>
+                        <td>
+                            <a asp-page="/Participants/Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
         </dd>
     </dl>
 </div>

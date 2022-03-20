@@ -23,7 +23,7 @@ public class Participant : BaseEntity
     public int ParticipantTypeId { get; set; }
     public ParticipantType? ParticipantType { get; set; }
 
-    [Display(Name = "Maksmise viis")]
+    [Display(Name = "Makseviis")]
     public int PaymentOptionId { get; set; }
     public PaymentOption? PaymentOption { get; set; }
 

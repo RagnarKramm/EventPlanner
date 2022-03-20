@@ -21,9 +21,16 @@ namespace WebApp.Pages.Events
         }
 
         public Event? Event { get; set; }
+        public IList<Participant>? Participant { get;set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            
+            Participant = await _context.Participants
+                .Include(p => p.Event)
+                .Include(p => p.ParticipantType)
+                .Include(p => p.PaymentOption).ToListAsync();
+            
             if (id == null)
             {
                 return NotFound();

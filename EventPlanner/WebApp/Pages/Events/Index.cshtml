@@ -43,7 +43,7 @@
                                     {
                                         participantCount += Int32.Parse(participant.ParticipantLine3);
                                     }
-                                    else
+                                    else if (participant.ParticipantType!.Name == "Eraisik")
                                     {
                                         participantCount++;
                                     }
@@ -108,7 +108,7 @@
                                     {
                                         participantCount += Int32.Parse(participant.ParticipantLine3);
                                     }
-                                    else
+                                    else if (participant.ParticipantType!.Name == "Eraisik")
                                     {
                                         participantCount++;
                                     }
