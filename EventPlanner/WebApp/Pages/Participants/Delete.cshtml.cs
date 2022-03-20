@@ -13,9 +13,9 @@ namespace WebApp.Pages.Participants
 {
     public class DeleteModel : PageModel
     {
-        private readonly WebApp.DAL.AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        public DeleteModel(WebApp.DAL.AppDbContext context)
+        public DeleteModel(AppDbContext context)
         {
             _context = context;
         }

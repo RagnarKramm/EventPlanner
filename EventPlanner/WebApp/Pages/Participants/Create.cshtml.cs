@@ -1,11 +1,9 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
 
@@ -13,15 +11,19 @@ namespace WebApp.Pages.Participants
 {
     public class CreateModel : PageModel
     {
-        private readonly WebApp.DAL.AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        public CreateModel(WebApp.DAL.AppDbContext context)
+        [BindProperty]
+        public ParticipantType ParticipantType { get; set; }
+        public CreateModel(AppDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync(int? participantTypeId)
         {
+            ParticipantType = await _context.ParticipantTypes.FirstOrDefaultAsync(type => type.Id == participantTypeId);
+            
         ViewData["EventId"] = new SelectList(_context.Events, "Id", "Id");
         ViewData["ParticipantTypeId"] = new SelectList(_context.ParticipantTypes, "Id", "Id");
         ViewData["PaymentOptionId"] = new SelectList(_context.PaymentOptions, "Id", "Id");

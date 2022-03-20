@@ -13,9 +13,9 @@ namespace WebApp.Pages.Participants
 {
     public class IndexModel : PageModel
     {
-        private readonly WebApp.DAL.AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        public IndexModel(WebApp.DAL.AppDbContext context)
+        public IndexModel(AppDbContext context)
         {
             _context = context;
         }

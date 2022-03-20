@@ -13,13 +13,14 @@ namespace WebApp.Pages.Events
 {
     public class CreateModel : PageModel
     {
-        private readonly WebApp.DAL.AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        public CreateModel(WebApp.DAL.AppDbContext context)
+        public string ErrorMessage { get; set; } = default!;
+        public CreateModel(AppDbContext context)
         {
             _context = context;
         }
-
+        
         public IActionResult OnGet()
         {
             return Page();
@@ -33,6 +34,13 @@ namespace WebApp.Pages.Events
         {
             if (!ModelState.IsValid)
             {
+                return Page();
+            }
+            
+            if (Event.HappeningAt.CompareTo(DateTime.Now) < 0)
+            {
+                ErrorMessage = "Selected time is in the past, " +
+                               "please enter a valid time for your event!";
                 return Page();
             }
 

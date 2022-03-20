@@ -14,9 +14,9 @@ namespace WebApp.Pages.Participants
 {
     public class EditModel : PageModel
     {
-        private readonly WebApp.DAL.AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        public EditModel(WebApp.DAL.AppDbContext context)
+        public EditModel(AppDbContext context)
         {
             _context = context;
         }

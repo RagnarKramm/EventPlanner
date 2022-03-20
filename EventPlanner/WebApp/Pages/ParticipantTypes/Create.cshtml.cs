@@ -13,9 +13,9 @@ namespace WebApp.Pages.ParticipantTypes
 {
     public class CreateModel : PageModel
     {
-        private readonly WebApp.DAL.AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        public CreateModel(WebApp.DAL.AppDbContext context)
+        public CreateModel(AppDbContext context)
         {
             _context = context;
         }
