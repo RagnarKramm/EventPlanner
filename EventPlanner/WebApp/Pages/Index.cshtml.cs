@@ -1,18 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using WebApp.DAL;
+using WebApp.Domain;
 
-namespace WebApp.Pages;
-
-public class IndexModel : PageModel
+namespace WebApp.Pages
 {
-    private readonly ILogger<IndexModel> _logger;
-
-    public IndexModel(ILogger<IndexModel> logger)
+    public class IndexModel : PageModel
     {
-        _logger = logger;
-    }
+        private readonly AppDbContext _context;
 
-    public void OnGet()
-    {
+        public IndexModel(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        public IList<Event>? Event { get;set; }
+        public IList<ParticipantType>? ParticipantTypes { get; set; }
+
+        public async Task OnGetAsync()
+        {
+            Event = await _context.Events.Include(item => item.Participants)!.ThenInclude(participant => participant.ParticipantType).ToListAsync();
+            ParticipantTypes = await _context.ParticipantTypes.ToListAsync();
+        }
     }
 }

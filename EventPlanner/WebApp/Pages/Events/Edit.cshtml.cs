@@ -75,7 +75,7 @@ namespace WebApp.Pages.Events
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Index");
         }
 
         private bool EventExists(int id)

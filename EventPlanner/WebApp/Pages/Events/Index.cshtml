@@ -8,7 +8,7 @@
 <h1>Ürituste haldamise süsteem</h1>
 
 <p>
-    <a asp-page="Create">Lisa uus üritus</a>
+    <a asp-page="/Events/Create">Lisa uus üritus</a>
 </p>
 
 <div class="container">
@@ -27,7 +27,7 @@
                     {
                         <tr>
                             <td>
-                                <a asp-page="./Details" asp-route-id="@item.Id">@item.Name</a>
+                                <a asp-page="/Events/Details" asp-route-id="@item.Id">@item.Name</a>
                             </td>
                             <td>
                                 @item.HappeningAt.ToString("dd.MM.yyyy")
@@ -67,7 +67,7 @@
                             </td>
                             
                             <td>
-                            <a asp-page="./Delete" asp-route-id="@item.Id">
+                            <a asp-page="/Events/Delete" asp-route-id="@item.Id">
                             <svg enable-background="new 0 0 32 32" height="32px" id="Layer_1" version="1.1"
                                  viewBox="0 0 32 32" width="32px" xml:space="preserve"
                                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -99,7 +99,7 @@
                         {
                             <tr>
                                 <td>
-                                    <a asp-page="./Details" asp-route-id="@item.Id">@item.Name</a>
+                                    <a asp-page="/Events/Details" asp-route-id="@item.Id">@item.Name</a>
                                 </td>
                                 <td>
                                     @item.HappeningAt.ToString("dd.MM.yyyy")
