@@ -57,23 +57,20 @@
                     <tr>
                         @if (item.ParticipantType!.Name == "Ettevõte")
                         {
-                            <td> @item.ParticipantLine1</td>
+                            <td><a asp-page="/Participants/Details" asp-route-id="@item.Id"> @item.ParticipantLine1</a></td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ParticipantLine2)
                             </td>
                         }
                         else if (item.ParticipantType!.Name == "Eraisik")
                         {
-                            <td> @item.ParticipantLine1 @item.ParticipantLine2</td>
+                            <td><a asp-page="/Participants/Details" asp-route-id="@item.Id"> @item.ParticipantLine1 @item.ParticipantLine2</a></td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ParticipantLine3)
                             </td>
                         }
                         <td>
-                            <a asp-page="/Participants/Details" asp-route-id="@item.Id">Details</a>
-                        </td>
-                        <td>
-                            <a asp-page="/Participants/Delete" asp-route-id="@item.Id">Delete</a>
+                            <a asp-page="/Participants/Delete" asp-route-id="@item.Id">Kustuta</a>
                         </td>
                     </tr>
                     }
@@ -83,6 +80,6 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Event!.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Event!.Id">Muuda andmeid</a> |
+    <a asp-page="./Index">Tagasi</a>
 </div>

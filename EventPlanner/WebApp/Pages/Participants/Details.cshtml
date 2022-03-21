@@ -2,60 +2,54 @@
 @model WebApp.Pages.Participants.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Osaleja informatsioon";
 }
 
-<h1>Details</h1>
+<h1>Osaleja informatsioon</h1>
 
 <div>
-    <h4>Participant</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Participant!.ParticipantLine1)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Participant!.ParticipantLine1)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Participant!.ParticipantLine2)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Participant!.ParticipantLine2)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Participant!.ParticipantLine3)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Participant!.ParticipantLine3)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Participant!.AdditionalInformation)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Participant!.AdditionalInformation)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Participant!.Event)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Participant!.Event!.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Participant!.ParticipantType)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Participant!.ParticipantType!.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Participant!.PaymentOption)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Participant!.PaymentOption!.Id)
-        </dd>
-    </dl>
+    <h4>@Model.Participant!.ParticipantType!.Name</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Model.Participant!.ParticipantType!.Line1Header
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Participant!.ParticipantLine1)
+            </dd>
+            <dt class="col-sm-2">
+                @Model.Participant!.ParticipantType!.Line2Header
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Participant!.ParticipantLine2)
+            </dd>
+            <dt class="col-sm-2">
+                @Model.Participant!.ParticipantType!.Line3Header
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Participant!.ParticipantLine3)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Participant!.AdditionalInformation)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Participant!.AdditionalInformation)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Participant!.Event!.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Participant!.Event!.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Participant!.PaymentOptionId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Participant!.PaymentOption!.Name)
+            </dd>
+        </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Participant!.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Participant!.Id">Muuda andmeid</a> |
+    <a asp-page="/Events/Details" asp-route-id="@Model.Participant!.EventId">Tagasi</a>
 </div>

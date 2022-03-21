@@ -24,6 +24,11 @@ namespace WebApp.Pages.Participants
         [BindProperty]
         public Participant? Participant { get; set; }
 
+        public SelectList? PaymentOptionsSelectList { get; set; }
+
+        public string? ErrorMessage { get; set; }
+
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -54,6 +59,14 @@ namespace WebApp.Pages.Participants
             {
                 return Page();
             }
+            var participantType = await _context.ParticipantTypes.FirstAsync(type => type.Id == Participant!.ParticipantTypeId);
+
+            
+            if (Participant!.AdditionalInformation.Length > participantType.DescriptionLimit)
+            {
+                ErrorMessage = $"Kirjelduse limiit on {participantType.DescriptionLimit} märki, palun sisestage vähem kui {participantType.DescriptionLimit} märki!";
+                return Page();
+            }
 
             _context.Attach(Participant!).State = EntityState.Modified;
 
@@ -73,7 +86,7 @@ namespace WebApp.Pages.Participants
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Events/Details", new{id = Participant!.EventId});
         }
 
         private bool ParticipantExists(int id)

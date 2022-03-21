@@ -14,19 +14,20 @@ namespace WebApp.Pages.Participants
 {
     public class CreateModel : PageModel
     {
-        private readonly WebApp.DAL.AppDbContext _context;
+        private readonly AppDbContext _context;
         [BindProperty] public Participant Participant { get; set; } = default!;
 
         public Event Event { get; set; } = default!;
         public ParticipantType ParticipantType { get; set; } = default!;
 
         public SelectList? PaymentOptionsSelectList { get; set; }
+
+        public string? ErrorMessage { get; set; }
+
         public CreateModel(AppDbContext context)
         {
             _context = context;
         }
-        
-        public string? ErrorMessage { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int eventId, int participantTypeId)
         {
@@ -53,9 +54,9 @@ namespace WebApp.Pages.Participants
                 return Page();
             }
             
-            if (Participant.ParticipantTypeId == 1 && Participant.AdditionalInformation.Length > 1500)
+            if (Participant.AdditionalInformation.Length > ParticipantType.DescriptionLimit)
             {
-                ErrorMessage = "Kirjelduse limiit on 1500 märki, palun sisestage vähem kui 1500 märki!";
+                ErrorMessage = $"Kirjelduse limiit on {ParticipantType.DescriptionLimit} märki, palun sisestage vähem kui {ParticipantType.DescriptionLimit} märki!";
                 return Page();
             }
             

@@ -42,15 +42,11 @@
                 }
             </div>
             <div class="form-group">
-                <input type="hidden" asp-for="Participant.EventId" value="@Model.Event.Id"/>
-            </div>
-            <div class="form-group">
-                <input type="hidden" asp-for="Participant.ParticipantTypeId" value="@Model.ParticipantType.Id"/>
-            </div>
-            <div class="form-group">
                 <label asp-for="PaymentOptionsSelectList!" class="control-label"></label>
                 <select asp-for="Participant.PaymentOptionId" class ="form-control" asp-items="@Model.PaymentOptionsSelectList"></select>
             </div>
+            <input type="hidden" asp-for="Participant.ParticipantTypeId" value="@Model.ParticipantType.Id"/>
+            <input type="hidden" asp-for="Participant.EventId" value="@Model.Event.Id"/>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -59,7 +55,7 @@
 </div>
 
 <div>
-    <a asp-page="/Events/Index">Back to List</a>
+    <a asp-page="/Events/Index">Tagasi</a>
 </div>
 
 @section Scripts {
