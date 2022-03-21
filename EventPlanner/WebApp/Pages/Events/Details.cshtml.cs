@@ -29,7 +29,7 @@ namespace WebApp.Pages.Events
             Participant = await _context.Participants
                 .Include(p => p.Event)
                 .Include(p => p.ParticipantType)
-                .Include(p => p.PaymentOption).ToListAsync();
+                .Include(p => p.PaymentOption).Where(participant => participant.EventId == id).ToListAsync();
             
             if (id == null)
             {

@@ -27,7 +27,7 @@
             @Html.DisplayNameFor(model => model.Event!.HappeningAt):
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event!.HappeningAt)
+            @Model.Event!.HappeningAt.ToString("dd.MM.yyyy H:mm")
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Event!.Description):
@@ -39,8 +39,10 @@
             Külalised:
         </dt>
         <dd class="col-sm-10">
-            <table class="table">
-                <thead>
+            @if (Model.Participant!.Count > 0)
+            {
+                <table class="table">
+                    <thead>
                     <tr>
                         <th>
                             Osaleja täisnimi/juriidiline nimi
@@ -51,31 +53,37 @@
                         <th></th>
                         <th></th>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Participant!) {
-                    <tr>
-                        @if (item.ParticipantType!.Name == "Ettevõte")
-                        {
-                            <td><a asp-page="/Participants/Details" asp-route-id="@item.Id"> @item.ParticipantLine1</a></td>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.Participant!)
+                    {
+                        <tr>
+                            @if (item.ParticipantType!.Name == "Ettevõte")
+                            {
+                                <td><a asp-page="/Participants/Details" asp-route-id="@item.Id"> @item.ParticipantLine1</a></td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ParticipantLine2)
+                                </td>
+                            }
+                            else if (item.ParticipantType!.Name == "Eraisik")
+                            {
+                                <td><a asp-page="/Participants/Details" asp-route-id="@item.Id"> @item.ParticipantLine1 @item.ParticipantLine2</a></td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ParticipantLine3)
+                                </td>
+                            }
                             <td>
-                                @Html.DisplayFor(modelItem => item.ParticipantLine2)
+                                <a asp-page="/Participants/Delete" asp-route-id="@item.Id">Kustuta</a>
                             </td>
-                        }
-                        else if (item.ParticipantType!.Name == "Eraisik")
-                        {
-                            <td><a asp-page="/Participants/Details" asp-route-id="@item.Id"> @item.ParticipantLine1 @item.ParticipantLine2</a></td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ParticipantLine3)
-                            </td>
-                        }
-                        <td>
-                            <a asp-page="/Participants/Delete" asp-route-id="@item.Id">Kustuta</a>
-                        </td>
-                    </tr>
+                        </tr>
                     }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Ühtegi külalist pole veel lisatud!</p>
+            }
         </dd>
     </dl>
 </div>
