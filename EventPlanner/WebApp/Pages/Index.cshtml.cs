@@ -24,7 +24,8 @@ namespace WebApp.Pages
 
         public async Task OnGetAsync()
         {
-            Event = await _context.Events.Include(item => item.Participants)!.ThenInclude(participant => participant.ParticipantType).ToListAsync();
+            Event = await _context.Events.Include(item => item.Participants)!
+                .ThenInclude(participant => participant.ParticipantType).OrderBy(item => item.HappeningAt).ToListAsync();
             ParticipantTypes = await _context.ParticipantTypes.ToListAsync();
         }
     }
