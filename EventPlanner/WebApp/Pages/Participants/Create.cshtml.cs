@@ -64,7 +64,7 @@ namespace WebApp.Pages.Participants
             _context.Participants.Add(Participant);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Events/Index");
+            return RedirectToPage("/Index");
         }
     }
 }
