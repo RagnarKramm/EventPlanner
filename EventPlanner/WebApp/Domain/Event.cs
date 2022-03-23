@@ -5,7 +5,7 @@ namespace WebApp.Domain;
 public class Event : BaseEntity
 {
     [MaxLength(256)]
-    [Display(Name = "Nimi")]
+    [Display(Name = "Ürituse nimi")]
     public string Name { get; set; } = default!;
     
     [MaxLength(256)]
