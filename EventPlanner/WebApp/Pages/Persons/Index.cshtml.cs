@@ -28,5 +28,6 @@ namespace WebApp.Pages.Persons
                 .Include(p => p.Event)
                 .Include(p => p.PaymentOption).ToListAsync();
         }
+        
     }
 }

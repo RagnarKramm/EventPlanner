@@ -11,7 +11,8 @@ public class Participant : BaseEntity
     public int PaymentOptionId { get; set; }
     public PaymentOption? PaymentOption { get; set; }
 
+    [Display(Name = "Üritus")]
     public int EventId { get; set; }
-
+    
     public Event? Event { get; set; }
 }

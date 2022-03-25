@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace WebApp.Pages.Businesses
         }
 
         [BindProperty]
-        public Business Business { get; set; }
+        public Business? Business { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -56,7 +56,7 @@ namespace WebApp.Pages.Businesses
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Events/Details", new{ id = Business!.EventId});
         }
     }
 }

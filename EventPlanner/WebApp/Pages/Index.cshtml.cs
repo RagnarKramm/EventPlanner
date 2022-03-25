@@ -44,5 +44,10 @@ namespace WebApp.Pages
 
             return participantCount;
         }
+        
+        public bool IsInFuture(DateTime dateTime)
+        {
+            return dateTime.CompareTo(DateTime.Now) > 0;
+        }
     }
 }

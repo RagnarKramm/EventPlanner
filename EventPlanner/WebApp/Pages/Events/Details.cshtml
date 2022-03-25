@@ -39,55 +39,128 @@
             Külalised:
         </dt>
         <dd class="col-sm-10">
-            @if (Model.Participant!.Count > 0)
+            <br/>
+            @if (Model.Persons!.Count > 0 || Model.Businesses!.Count > 0)
             {
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>
-                            Osaleja täisnimi/juriidiline nimi
-                        </th>
-                        <th>
-                            Isikukood/registrikood
-                        </th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var item in Model.Participant!)
-                    {
-                        <tr>
-                            @* @if (item.ParticipantType!.Name == "Ettevõte") *@
-                            @* { *@
-                            @*     <td><a asp-page="/Participants/Details" asp-route-id="@item.Id"> @item.ParticipantLine1</a></td> *@
-                            @*     <td> *@
-                            @*         @Html.DisplayFor(modelItem => item.ParticipantLine2) *@
-                            @*     </td> *@
-                            @* } *@
-                            @* else if (item.ParticipantType!.Name == "Eraisik") *@
-                            @* { *@
-                            @*     <td><a asp-page="/Participants/Details" asp-route-id="@item.Id"> @item.ParticipantLine1 @item.ParticipantLine2</a></td> *@
-                            @*     <td> *@
-                            @*         @Html.DisplayFor(modelItem => item.ParticipantLine3) *@
-                            @*     </td> *@
-                            @* } *@
-                            <td>
-                                <a asp-page="/Participants/Delete" class="text-danger" asp-route-id="@item.Id">Kustuta</a>
-                            </td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="table">
+                                @if (Model.Persons!.Count > 0)
+                                {
+                                    <h5 class="text-center">Eraisikud</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Täisnimi
+                                            </th>
+                                            <th>
+                                                Isikukood
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach (var item in Model.Persons!)
+                                        {
+                                            <tr>
+
+                                                <td><a asp-page="/Persons/Details" asp-route-id="@item.Id"> @item.FirstName @item.LastName</a></td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IdCode)
+                                                </td>
+                                                <td>
+                                                    <a asp-page="/Persons/Delete" class="text-danger" asp-route-id="@item.Id">
+                                                        <svg enable-background="new 0 0 32 32" height="20px" id="Layer_1" version="1.1"
+                                                             viewBox="0 0 32 32" width="20px" xml:space="preserve"
+                                                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                            <path d="M20.377,16.519l6.567-6.566c0.962-0.963,0.962-2.539,0-3.502l-0.876-0.875c-0.963-0.964-2.539-0.964-3.501,0  L16,12.142L9.433,5.575c-0.962-0.963-2.538-0.963-3.501,0L5.056,6.45c-0.962,0.963-0.962,2.539,0,3.502l6.566,6.566l-6.566,6.567  c-0.962,0.963-0.962,2.538,0,3.501l0.876,0.876c0.963,0.963,2.539,0.963,3.501,0L16,20.896l6.567,6.566  c0.962,0.963,2.538,0.963,3.501,0l0.876-0.876c0.962-0.963,0.962-2.538,0-3.501L20.377,16.519z" fill="#515151"/>
+                                                        </svg>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <p>Ühtegi eraisikut pole lisatud!</p>
+                                    @if (Model.IsInFuture(Model.Event.HappeningAt))
+                                    {
+                                        <a class="btn btn-outline-primary" asp-page="/Persons/Create" asp-route-eventId="@Model.Event.Id">Lisan eraisiku</a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="table">
+
+                                @if (Model.Businesses!.Count > 0)
+                                {
+                                    <h5 class="text-center">Juriidilised isikud</h5>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                Juriidiline nimi
+                                            </th>
+                                            <th>
+                                                Registrikood
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach (var item in Model.Businesses!)
+                                        {
+                                            <tr>
+                                                <td><a asp-page="/Businesses/Details" asp-route-id="@item.Id">@item.BusinessName</a></td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.RegisterCode)
+                                                </td>
+                                                <td>
+                                                    <a asp-page="/Businesses/Delete" asp-route-id="@item.Id">
+                                                        <svg enable-background="new 0 0 32 32" height="20px" id="Layer_1" version="1.1"
+                                                             viewBox="0 0 32 32" width="20px" xml:space="preserve"
+                                                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                            <path d="M20.377,16.519l6.567-6.566c0.962-0.963,0.962-2.539,0-3.502l-0.876-0.875c-0.963-0.964-2.539-0.964-3.501,0  L16,12.142L9.433,5.575c-0.962-0.963-2.538-0.963-3.501,0L5.056,6.45c-0.962,0.963-0.962,2.539,0,3.502l6.566,6.566l-6.566,6.567  c-0.962,0.963-0.962,2.538,0,3.501l0.876,0.876c0.963,0.963,2.539,0.963,3.501,0L16,20.896l6.567,6.566  c0.962,0.963,2.538,0.963,3.501,0l0.876-0.876c0.962-0.963,0.962-2.538,0-3.501L20.377,16.519z" fill="#515151"/>
+                                                        </svg>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <p>Ühtegi ettevõtet veel lisatud!</p>
+                                    @if (Model.IsInFuture(Model.Event.HappeningAt))
+                                    {
+                                        <a class="btn btn-outline-primary" asp-page="/Businesses/Create" asp-route-eventId="@Model.Event.Id">Lisan ettevõtte</a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
             else
             {
                 <p>Ühtegi külalist pole veel lisatud!</p>
+                @if (Model.IsInFuture(Model.Event.HappeningAt))
+                {
+                    <a class="btn btn-outline-primary" asp-page="/Persons/Create" asp-route-eventId="@Model.Event.Id">Lisan eraisiku</a>
+                    <a class="btn btn-outline-primary" asp-page="/Businesses/Create" asp-route-eventId="@Model.Event.Id">Lisan ettevõtte</a>
+                }
             }
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Event!.Id">Muuda andmeid</a> |
-    <a asp-page="/Index">Tagasi</a>
+    <a class="btn btn-outline-primary" asp-page="/Index">Tagasi</a>
+    <a class="btn btn-outline-primary" asp-page="./Edit" asp-route-id="@Model.Event!.Id">Muuda andmeid</a>
 </div>
+

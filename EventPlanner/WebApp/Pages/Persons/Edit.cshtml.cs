@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +15,16 @@ namespace WebApp.Pages.Persons
     {
         private readonly AppDbContext _context;
 
+        public SelectList? PaymentOptionsSelectList { get; set; }
+
         public EditModel(AppDbContext context)
         {
             _context = context;
         }
 
+
         [BindProperty]
-        public Person Person { get; set; }
+        public Person? Person { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,6 +32,7 @@ namespace WebApp.Pages.Persons
             {
                 return NotFound();
             }
+            PaymentOptionsSelectList = new SelectList(_context.PaymentOptions, nameof(PaymentOption.Id), nameof(PaymentOption.Name));
 
             Person = await _context.Persons
                 .Include(p => p.Event)
@@ -39,8 +42,6 @@ namespace WebApp.Pages.Persons
             {
                 return NotFound();
             }
-           ViewData["EventId"] = new SelectList(_context.Events, "Id", "Id");
-           ViewData["PaymentOptionId"] = new SelectList(_context.PaymentOptions, "Id", "Id");
             return Page();
         }
 
@@ -53,7 +54,7 @@ namespace WebApp.Pages.Persons
                 return Page();
             }
 
-            _context.Attach(Person).State = EntityState.Modified;
+            _context.Attach(Person!).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +62,7 @@ namespace WebApp.Pages.Persons
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PersonExists(Person.Id))
+                if (!PersonExists(Person!.Id))
                 {
                     return NotFound();
                 }
@@ -71,7 +72,7 @@ namespace WebApp.Pages.Persons
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Details", new {id = Person!.Id});
         }
 
         private bool PersonExists(int id)

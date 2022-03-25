@@ -21,16 +21,16 @@ namespace WebApp.Pages.Events
         }
 
         public Event? Event { get; set; }
-        public IList<Participant>? Participant { get;set; }
+        public IList<Business>? Businesses { get;set; }
+        public IList<Person>? Persons { get;set; }
+
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             
-            // Participant = await _context.Participants
-            //     .Include(p => p.Event)
-            //     .Include(p => p.ParticipantType)
-            //     .Include(p => p.PaymentOption).Where(participant => participant.EventId == id).ToListAsync();
-            //
+            Businesses = await _context.Businesses.Where(business => business.EventId == id).ToListAsync();
+            Persons = await _context.Persons.Where(person => person.EventId == id).ToListAsync();
+
             if (id == null)
             {
                 return NotFound();
@@ -43,6 +43,11 @@ namespace WebApp.Pages.Events
                 return NotFound();
             }
             return Page();
+        }
+
+        public bool IsInFuture(DateTime dateTime)
+        {
+            return dateTime.CompareTo(DateTime.Now) > 0;
         }
     }
 }

@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +15,14 @@ namespace WebApp.Pages.Businesses
     {
         private readonly AppDbContext _context;
 
+        public SelectList? PaymentOptionsSelectList { get; set; }
+
         public EditModel(AppDbContext context)
         {
             _context = context;
         }
 
-        [BindProperty]
-        public Business Business { get; set; }
+        [BindProperty] public Business? Business { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,6 +30,9 @@ namespace WebApp.Pages.Businesses
             {
                 return NotFound();
             }
+            
+            PaymentOptionsSelectList = new SelectList(_context.PaymentOptions, nameof(PaymentOption.Id), nameof(PaymentOption.Name));
+
 
             Business = await _context.Businesses
                 .Include(b => b.Event)
@@ -39,8 +42,7 @@ namespace WebApp.Pages.Businesses
             {
                 return NotFound();
             }
-           ViewData["EventId"] = new SelectList(_context.Events, "Id", "Id");
-           ViewData["PaymentOptionId"] = new SelectList(_context.PaymentOptions, "Id", "Id");
+            
             return Page();
         }
 
@@ -53,7 +55,7 @@ namespace WebApp.Pages.Businesses
                 return Page();
             }
 
-            _context.Attach(Business).State = EntityState.Modified;
+            _context.Attach(Business!).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +63,7 @@ namespace WebApp.Pages.Businesses
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BusinessExists(Business.Id))
+                if (!BusinessExists(Business!.Id))
                 {
                     return NotFound();
                 }
@@ -71,7 +73,7 @@ namespace WebApp.Pages.Businesses
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Details", new{ id = Business!.Id});
         }
 
         private bool BusinessExists(int id)
