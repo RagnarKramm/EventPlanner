@@ -23,23 +23,24 @@ namespace WebApp.Pages
 
         public async Task OnGetAsync()
         {
-            // Event = await _context.Events.Include(item => item.Participants)!
-            //     .ThenInclude(participant => participant.ParticipantType).OrderBy(item => item.HappeningAt).ToListAsync();
-            // ParticipantTypes = await _context.ParticipantTypes.ToListAsync();
+            Event = await _context.Events.Include(item => item.Persons)
+                .Include(item => item.Businesses).OrderBy(item => item.HappeningAt).ToListAsync();
 
-            Event = await _context.Events.ToListAsync();
         }
 
         public static int GetParticipantCount(Event theEvent)
         {
             var participantCount = 0;
-            
-            foreach (var business in theEvent.Businesses!)
-            {
-                participantCount += Int32.Parse(business.ParticipantCount.ToString());
-            }
 
-            participantCount += theEvent.Persons!.Count;
+            if (theEvent.Businesses != null)
+            {
+                foreach (var business in theEvent.Businesses)
+                {
+                    participantCount += Int32.Parse(business.ParticipantCount.ToString());
+                }
+            }
+           
+            if (theEvent.Persons != null) participantCount += theEvent.Persons.Count;
 
             return participantCount;
         }

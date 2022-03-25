@@ -13,9 +13,9 @@ namespace WebApp.Pages.Persons
 {
     public class DetailsModel : PageModel
     {
-        private readonly WebApp.DAL.AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        public DetailsModel(WebApp.DAL.AppDbContext context)
+        public DetailsModel(AppDbContext context)
         {
             _context = context;
         }

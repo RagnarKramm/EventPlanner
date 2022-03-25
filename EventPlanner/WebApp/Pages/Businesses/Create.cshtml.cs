@@ -1,4 +1,4 @@
-#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
 
@@ -13,22 +14,28 @@ namespace WebApp.Pages.Businesses
 {
     public class CreateModel : PageModel
     {
-        private readonly WebApp.DAL.AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        public CreateModel(WebApp.DAL.AppDbContext context)
+        public Event Event { get; set; } = default!;
+        
+        public SelectList? PaymentOptionsSelectList { get; set; }
+
+        public CreateModel(AppDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet(int eventId)
         {
-        ViewData["EventId"] = new SelectList(_context.Events, "Id", "Id");
-        ViewData["PaymentOptionId"] = new SelectList(_context.PaymentOptions, "Id", "Id");
+            Event = await _context.Events.FirstAsync(item => item.Id == eventId);
+            
+            PaymentOptionsSelectList = new SelectList(_context.PaymentOptions, nameof(PaymentOption.Id), nameof(PaymentOption.Name));
+
             return Page();
         }
 
         [BindProperty]
-        public Business Business { get; set; }
+        public Business? Business { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -38,10 +45,10 @@ namespace WebApp.Pages.Businesses
                 return Page();
             }
 
-            _context.Businesses.Add(Business);
+            _context.Businesses.Add(Business!);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Index");
         }
     }
 }
