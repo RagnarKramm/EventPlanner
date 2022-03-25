@@ -28,5 +28,24 @@ namespace WebApp.Pages
                 .ThenInclude(participant => participant.ParticipantType).OrderBy(item => item.HappeningAt).ToListAsync();
             ParticipantTypes = await _context.ParticipantTypes.ToListAsync();
         }
+
+        public int GetParticipantCount(Event theEvent)
+        {
+            var participantCount = 0;
+            
+            foreach (var participant in theEvent.Participants!)
+            {
+                if (participant.ParticipantType!.Name == "Ettevõte")
+                {
+                    participantCount += Int32.Parse(participant.ParticipantLine3);
+                }
+                else if (participant.ParticipantType!.Name == "Eraisik")
+                {
+                    participantCount++;
+                }
+            }
+
+            return participantCount;
+        }
     }
 }

@@ -15,10 +15,26 @@
     <div class="row">
         <div class="col-lg-7">
             <div class="table">
+            <h3 class="text-center">Tulevased üritused</h3>
             <table class="table">
                 <thead>
                 <tr>
-                    <p class="text-center">Tulevased üritused</p>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Event![0].Name)
+                    </th>
+                    
+                    <th>
+                        @Html.DisplayNameFor(model => model.Event![0].HappeningAt)
+                    </th>
+                    
+                    <th>
+                        @Html.DisplayNameFor(model => model.Event![0].Location)
+                    </th>
+                    <th>
+                        Külalisi
+                    </th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,23 +51,10 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Location)
                             </td>
-                            @{
-                                var participantCount = 0;
-                                foreach (var participant in item.Participants!)
-                                {
-                                    if (participant.ParticipantType!.Name == "Ettevõte")
-                                    {
-                                        participantCount += Int32.Parse(participant.ParticipantLine3);
-                                    }
-                                    else if (participant.ParticipantType!.Name == "Eraisik")
-                                    {
-                                        participantCount++;
-                                    }
-                                }
-                                <td>
-                                    @participantCount
-                                </td>
-                            }
+                            <td>
+                                @Model.GetParticipantCount(item)
+                            </td>
+                        
                             <td>
                                 <div class="dropdown show">
                                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -85,11 +88,25 @@
 
         </div>
         <div class="col-lg-4">
-            <div class="table-responsive">
+            <div class="table">
+                <h3 class="text-center">Toimunud üritused</h3>
                 <table class="table">
                     <thead>
                     <tr>
-                        <p class="text-center">Toimunud üritused</p>
+                        <th>
+                        @Html.DisplayNameFor(model => model.Event![0].Name)
+                    </th>
+                    
+                    <th>
+                        @Html.DisplayNameFor(model => model.Event![0].HappeningAt)
+                    </th>
+                    
+                    <th>
+                        @Html.DisplayNameFor(model => model.Event![0].Location)
+                    </th>
+                    <th>
+                        Külalisi
+                    </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -107,23 +124,9 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Location)
                                 </td>
-                                @{
-                                var participantCount = 0;
-                                foreach (var participant in item.Participants!)
-                                {
-                                    if (participant.ParticipantType!.Name == "Ettevõte")
-                                    {
-                                        participantCount += Int32.Parse(participant.ParticipantLine3);
-                                    }
-                                    else if (participant.ParticipantType!.Name == "Eraisik")
-                                    {
-                                        participantCount++;
-                                    }
-                                }
                                 <td>
-                                    @participantCount
+                                    @Model.GetParticipantCount(item)
                                 </td>
-                                }
                             </tr>
                         }
                     }
