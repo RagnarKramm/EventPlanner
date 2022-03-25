@@ -31,6 +31,9 @@ a {
   border-color: #2c3034;
 }
 
-header, footer, thead {
+header, footer{
   background-color: #f7fff2;
+}
+thead{
+  background-color: #eeffe3;
 }
