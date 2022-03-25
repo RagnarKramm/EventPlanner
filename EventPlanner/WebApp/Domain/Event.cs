@@ -4,11 +4,11 @@ namespace WebApp.Domain;
 
 public class Event : BaseEntity
 {
-    [MaxLength(256)]
+    [MaxLength(32)]
     [Display(Name = "Ürituse nimi")]
     public string Name { get; set; } = default!;
     
-    [MaxLength(256)]
+    [MaxLength(64)]
     [Display(Name = "Asukoht")]
     public string Location { get; set; } = default!;
     
@@ -19,5 +19,6 @@ public class Event : BaseEntity
     [Display(Name = "Lisainfo")]
     public string Description { get; set; } = default!;
 
-    public ICollection<Participant>? Participants { get; set; } 
+    public ICollection<Business>? Businesses { get; set; } 
+    public ICollection<Person>? Persons { get; set; } 
 }

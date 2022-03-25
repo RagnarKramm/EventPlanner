@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
+using WebApp.Pages;
 using Xunit;
 using Xunit.Sdk;
 
@@ -20,24 +21,6 @@ public class UnitTests
         Location = "Tammsaare park."
     };
 
-    private readonly ParticipantType _participantTypePerson= new ParticipantType
-    {
-        Name = "Eraisik",
-        DescriptionLimit = 1500,
-        Line1Header = "Eesnimi",
-        Line2Header = "Perekonnanimi",
-        Line3Header = "Isikukood"
-    };
-    
-    private readonly ParticipantType _participantTypeBusiness= new ParticipantType
-    {
-        Name = "Ettevõte",
-        DescriptionLimit = 5000,
-        Line1Header = "Juriidiline nimi",
-        Line2Header = "Registrikood",
-        Line3Header = "Osavõtjate arv"
-    };
-
     private readonly PaymentOption _paymentOptionCash = new PaymentOption
     {
         Name = "Sularaha",
@@ -50,20 +33,21 @@ public class UnitTests
         Description = "Makse pangaülekandega"
     };
 
-    private readonly Participant _participantPerson = new Participant
+    private readonly Person _person = new Person()
     {
-        ParticipantLine1 = "Martin",
-        ParticipantLine2 = "Maasikas",
-        ParticipantLine3 = "50211244205",
-        AdditionalInformation = "Mulle meeldivad vaarikad ja muud marjad."
+        FirstName = "Martin",
+        LastName = "Maasikas",
+        IdCode = "50211244205",
+        ParticipantCount = 1,
+        AdditionalInfo = "Mulle meeldivad vaarikad ja muud marjad."
     };
     
-    private readonly Participant _participantBusiness = new Participant
+    private readonly Business _business = new Business
     {
-        ParticipantLine1 = "Puud koju OÜ",
-        ParticipantLine2 = "19472819",
-        ParticipantLine3 = "31",
-        AdditionalInformation = "Meie firmast tuleb kaks inimest, kes soovivad taimset toitu."
+        BusinessName = "Puud koju OÜ",
+        RegisterCode = "19472819",
+        ParticipantCount = 31,
+        AdditionalInfo = "Meie firmast tuleb kaks inimest, kes soovivad taimset toitu."
     };
     
     [Fact]
@@ -165,47 +149,48 @@ public class UnitTests
     }
     
     [Fact]
-    public async Task TestCreateReadUpdateDeleteOnParticipantType()
+    public async Task TestCreateReadUpdateDeleteOnParticipantPerson()
     {
         await using var db = new AppDbContext(Utilities.TestDbContextOptions());
         // Arrange
-        var id = 0;
-        _participantTypePerson.Id = id;
-        db.ParticipantTypes.Add(_participantTypePerson);
+        var id = 52;
+        _person.Id = id;
+        db.Persons.Add(_person);
         await db.SaveChangesAsync();
         
         // Act
-        var participantTypesFromDb = await db.ParticipantTypes.FirstAsync(item => item.Id == id);
+        var personFromDb = await db.Persons.FirstAsync(item => item.Id == id);
 
         // Assert 
         Assert.Equal(
-            _participantTypePerson.Name, 
-            participantTypesFromDb.Name);
+            _person.FirstName, 
+            personFromDb.FirstName);
         Assert.Equal(
-            _participantTypePerson.Line2Header, 
-            participantTypesFromDb.Line2Header);
+            _person.LastName, 
+            personFromDb.LastName);
         
         // Update
-        var newLine2Header = "Registreerimise aeg";
-        participantTypesFromDb.Line2Header = newLine2Header;
-        db.Attach(participantTypesFromDb).State = EntityState.Modified;
+        var newAdditionalInfo = "Mulle meeldivad tegelikult maasikad.";
+        personFromDb.AdditionalInfo = newAdditionalInfo;
+        db.Attach(personFromDb).State = EntityState.Modified;
         await db.SaveChangesAsync();
         
         // Act
-        var updatedParticipantType = await db.ParticipantTypes.FirstAsync(item => item.Id == id);
+        var updatedPerson = await db.Persons.FirstAsync(item => item.Id == id);
         
         // Assert
-        Assert.Equal(newLine2Header, updatedParticipantType.Line2Header);
+        Assert.Equal(newAdditionalInfo, updatedPerson.AdditionalInfo);
         
         // Delete
-        var participantType = await db.ParticipantTypes.FirstAsync(item => item.Id == id);
+        var participant = await db.Persons.FirstAsync(item => item.Id == id);
         
         // Act
-        db.ParticipantTypes.Remove(participantType);
+        db.Persons.Remove(participant);
         await db.SaveChangesAsync();
 
         // Assert
-        Assert.Empty(db.ParticipantTypes);
+        Assert.Empty(db.Persons);
+        
     }
     
     [Fact]
@@ -213,43 +198,43 @@ public class UnitTests
     {
         await using var db = new AppDbContext(Utilities.TestDbContextOptions());
         // Arrange
-        var id = 52;
-        _participantBusiness.Id = id;
-        db.Participants.Add(_participantBusiness);
+        var id = 12;
+        _business.Id = id;
+        db.Businesses.Add(_business);
         await db.SaveChangesAsync();
         
         // Act
-        var participantFromDb = await db.Participants.FirstAsync(item => item.Id == id);
+        var businessFromDb = await db.Businesses.FirstAsync(item => item.Id == id);
 
         // Assert 
         Assert.Equal(
-            _participantBusiness.ParticipantLine1, 
-            participantFromDb.ParticipantLine1);
+            _business.BusinessName, 
+            businessFromDb.BusinessName);
         Assert.Equal(
-            _participantBusiness.ParticipantLine3, 
-            participantFromDb.ParticipantLine3);
+            _business.RegisterCode, 
+            businessFromDb.RegisterCode);
         
         // Update
         var newBusinessName = "Puit tuppa AS";
-        participantFromDb.ParticipantLine1 = newBusinessName;
-        db.Attach(participantFromDb).State = EntityState.Modified;
+        businessFromDb.BusinessName = newBusinessName;
+        db.Attach(businessFromDb).State = EntityState.Modified;
         await db.SaveChangesAsync();
         
         // Act
-        var updatedParticipant = await db.Participants.FirstAsync(item => item.Id == id);
+        var updatedBusiness = await db.Businesses.FirstAsync(item => item.Id == id);
         
         // Assert
-        Assert.Equal(newBusinessName, updatedParticipant.ParticipantLine1);
+        Assert.Equal(newBusinessName, updatedBusiness.BusinessName);
         
         // Delete
-        var participant = await db.Participants.FirstAsync(item => item.Id == id);
+        var business = await db.Businesses.FirstAsync(item => item.Id == id);
         
         // Act
-        db.Participants.Remove(participant);
+        db.Businesses.Remove(business);
         await db.SaveChangesAsync();
 
         // Assert
-        Assert.Empty(db.Participants);
+        Assert.Empty(db.Businesses);
         
     }
     
@@ -260,26 +245,31 @@ public class UnitTests
 
         // Assign
         var eventId = 2;
-        var participantTypeBusinessId = 4;
-        var participantTypePersonId = 1;
+        var cashPaymentId = 4;
+        var transferPaymentId = 1;
 
         _testEvent.Id = eventId;
         db.Events.Add(_testEvent);
-        _participantTypeBusiness.Id = participantTypeBusinessId;
-        _participantTypePerson.Id = participantTypePersonId;
-        db.ParticipantTypes.Add(_participantTypeBusiness);
-        db.ParticipantTypes.Add(_participantTypePerson);
+        _paymentOptionCash.Id = cashPaymentId;
+        _paymentOptionTransfer.Id = transferPaymentId;
+        db.PaymentOptions.Add(_paymentOptionCash);
+        db.PaymentOptions.Add(_paymentOptionTransfer);
         
-        _participantBusiness.ParticipantTypeId = participantTypeBusinessId;
-        _participantBusiness.EventId = eventId;
-        _participantPerson.ParticipantTypeId = participantTypePersonId;
-        _participantPerson.EventId = eventId;
-        db.Participants.Add(_participantBusiness);
-        db.Participants.Add(_participantPerson);
+        _business.PaymentOption = _paymentOptionCash;
+        _business.PaymentOptionId = cashPaymentId;
+        _business.EventId = eventId;
+
+        _person.PaymentOption = _paymentOptionTransfer;
+        _person.PaymentOptionId = transferPaymentId;
+        _person.EventId = eventId;
+        
+        db.Businesses.Add(_business);
+        db.Persons.Add(_person);
         
         // Act
-        var participants = new WebApp.Pages.IndexModel(db).GetParticipantCount(_testEvent);
+        var participants = IndexModel.GetParticipantCount(_testEvent);
         var viewModel = new WebApp.Pages.Events.CreateModel(db).OnGet();
+        
         //Assert
         Assert.Equal(32, participants);
     }

@@ -1,4 +1,4 @@
-
+#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +9,19 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
 
-namespace WebApp.Pages.ParticipantTypes
+namespace WebApp.Pages.Businesses
 {
     public class DeleteModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly WebApp.DAL.AppDbContext _context;
 
-        public DeleteModel(AppDbContext context)
+        public DeleteModel(WebApp.DAL.AppDbContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public ParticipantType? ParticipantType { get; set; }
+        public Business Business { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,9 +30,11 @@ namespace WebApp.Pages.ParticipantTypes
                 return NotFound();
             }
 
-            ParticipantType = await _context.ParticipantTypes.FirstOrDefaultAsync(m => m.Id == id);
+            Business = await _context.Businesses
+                .Include(b => b.Event)
+                .Include(b => b.PaymentOption).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (ParticipantType == null)
+            if (Business == null)
             {
                 return NotFound();
             }
@@ -46,11 +48,11 @@ namespace WebApp.Pages.ParticipantTypes
                 return NotFound();
             }
 
-            ParticipantType = await _context.ParticipantTypes.FindAsync(id);
+            Business = await _context.Businesses.FindAsync(id);
 
-            if (ParticipantType != null)
+            if (Business != null)
             {
-                _context.ParticipantTypes.Remove(ParticipantType);
+                _context.Businesses.Remove(Business);
                 await _context.SaveChangesAsync();
             }
 

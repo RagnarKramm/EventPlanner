@@ -1,4 +1,4 @@
-
+#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
 
-namespace WebApp.Pages.Participants
+namespace WebApp.Pages.Persons
 {
     public class DetailsModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace WebApp.Pages.Participants
             _context = context;
         }
 
-        public Participant? Participant { get; set; }
+        public Person Person { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,12 +29,11 @@ namespace WebApp.Pages.Participants
                 return NotFound();
             }
 
-            Participant = await _context.Participants
+            Person = await _context.Persons
                 .Include(p => p.Event)
-                .Include(p => p.ParticipantType)
                 .Include(p => p.PaymentOption).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Participant == null)
+            if (Person == null)
             {
                 return NotFound();
             }

@@ -11,9 +11,9 @@ public class AppDbContext : DbContext
 
     public DbSet<Event> Events { get; set; } = default!;
 
-    public DbSet<Participant> Participants { get; set; } = default!;
+    public DbSet<Person> Persons { get; set; } = default!;
 
-    public DbSet<ParticipantType> ParticipantTypes { get; set; } = default!;
+    public DbSet<Business> Businesses { get; set; } = default!;
 
     public DbSet<PaymentOption> PaymentOptions { get; set; } = default!;
 }

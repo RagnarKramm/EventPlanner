@@ -1,4 +1,4 @@
-
+#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +10,19 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
 
-namespace WebApp.Pages.ParticipantTypes
+namespace WebApp.Pages.Businesses
 {
     public class EditModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly WebApp.DAL.AppDbContext _context;
 
-        public EditModel(AppDbContext context)
+        public EditModel(WebApp.DAL.AppDbContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public ParticipantType? ParticipantType { get; set; }
+        public Business Business { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -31,12 +31,16 @@ namespace WebApp.Pages.ParticipantTypes
                 return NotFound();
             }
 
-            ParticipantType = await _context.ParticipantTypes.FirstOrDefaultAsync(m => m.Id == id);
+            Business = await _context.Businesses
+                .Include(b => b.Event)
+                .Include(b => b.PaymentOption).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (ParticipantType == null)
+            if (Business == null)
             {
                 return NotFound();
             }
+           ViewData["EventId"] = new SelectList(_context.Events, "Id", "Id");
+           ViewData["PaymentOptionId"] = new SelectList(_context.PaymentOptions, "Id", "Id");
             return Page();
         }
 
@@ -49,7 +53,7 @@ namespace WebApp.Pages.ParticipantTypes
                 return Page();
             }
 
-            _context.Attach(ParticipantType!).State = EntityState.Modified;
+            _context.Attach(Business).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +61,7 @@ namespace WebApp.Pages.ParticipantTypes
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ParticipantTypeExists(ParticipantType!.Id))
+                if (!BusinessExists(Business.Id))
                 {
                     return NotFound();
                 }
@@ -70,9 +74,9 @@ namespace WebApp.Pages.ParticipantTypes
             return RedirectToPage("./Index");
         }
 
-        private bool ParticipantTypeExists(int id)
+        private bool BusinessExists(int id)
         {
-            return _context.ParticipantTypes.Any(e => e.Id == id);
+            return _context.Businesses.Any(e => e.Id == id);
         }
     }
 }

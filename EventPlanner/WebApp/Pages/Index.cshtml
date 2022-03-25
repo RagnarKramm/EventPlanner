@@ -52,7 +52,7 @@
                                 @Html.DisplayFor(modelItem => item.Location)
                             </td>
                             <td>
-                                @Model.GetParticipantCount(item)
+                                @IndexModel.GetParticipantCount(item)
                             </td>
                         
                             <td>
@@ -62,9 +62,8 @@
                                     </a>
                                                                 
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        @foreach(var type in Model.ParticipantTypes!){
-                                            <a class="dropdown-item" asp-page="/Participants/Create" asp-route-eventId="@item.Id" asp-route-participantTypeId="@type.Id">@type.Name</a>
-                                        }
+                                        <a class="dropdown-item" asp-page="/Participants/Create" asp-route-eventId="@item.Id" asp-route-participantTypeId=""></a>
+                                        
                                     </div>
                                 </div>
                             </td>
@@ -125,7 +124,7 @@
                                     @Html.DisplayFor(modelItem => item.Location)
                                 </td>
                                 <td>
-                                    @Model.GetParticipantCount(item)
+                                    @IndexModel.GetParticipantCount(item)
                                 </td>
                             </tr>
                         }

@@ -4,11 +4,11 @@ namespace WebApp.Domain;
 
 public class PaymentOption : BaseEntity
 {
-    [MaxLength(128)]
+    [MaxLength(64)]
     public string Name { get; set; } = default!;
 
-    [MaxLength(1024)]
+    [MaxLength(512)]
     public string Description { get; set; } = default!;
     
-    public ICollection<Participant>? Participants { get; set; }
-}
+    public ICollection<Business>? Businesses { get; set; } 
+    public ICollection<Person>? Persons { get; set; } }

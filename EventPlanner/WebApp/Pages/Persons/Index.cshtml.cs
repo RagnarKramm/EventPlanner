@@ -1,4 +1,4 @@
-
+#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
 
-namespace WebApp.Pages.Participants
+namespace WebApp.Pages.Persons
 {
     public class IndexModel : PageModel
     {
@@ -20,13 +20,12 @@ namespace WebApp.Pages.Participants
             _context = context;
         }
 
-        public IList<Participant>? Participant { get;set; }
+        public IList<Person> Person { get;set; }
 
         public async Task OnGetAsync()
         {
-            Participant = await _context.Participants
+            Person = await _context.Persons
                 .Include(p => p.Event)
-                .Include(p => p.ParticipantType)
                 .Include(p => p.PaymentOption).ToListAsync();
         }
     }

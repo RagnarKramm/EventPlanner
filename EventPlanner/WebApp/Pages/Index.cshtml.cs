@@ -20,30 +20,26 @@ namespace WebApp.Pages
         }
 
         public IList<Event>? Event { get;set; }
-        public IList<ParticipantType>? ParticipantTypes { get; set; }
 
         public async Task OnGetAsync()
         {
-            Event = await _context.Events.Include(item => item.Participants)!
-                .ThenInclude(participant => participant.ParticipantType).OrderBy(item => item.HappeningAt).ToListAsync();
-            ParticipantTypes = await _context.ParticipantTypes.ToListAsync();
+            // Event = await _context.Events.Include(item => item.Participants)!
+            //     .ThenInclude(participant => participant.ParticipantType).OrderBy(item => item.HappeningAt).ToListAsync();
+            // ParticipantTypes = await _context.ParticipantTypes.ToListAsync();
+
+            Event = await _context.Events.ToListAsync();
         }
 
-        public int GetParticipantCount(Event theEvent)
+        public static int GetParticipantCount(Event theEvent)
         {
             var participantCount = 0;
             
-            foreach (var participant in theEvent.Participants!)
+            foreach (var business in theEvent.Businesses!)
             {
-                if (participant.ParticipantType!.Name == "Ettevõte")
-                {
-                    participantCount += Int32.Parse(participant.ParticipantLine3);
-                }
-                else if (participant.ParticipantType!.Name == "Eraisik")
-                {
-                    participantCount++;
-                }
+                participantCount += Int32.Parse(business.ParticipantCount.ToString());
             }
+
+            participantCount += theEvent.Persons!.Count;
 
             return participantCount;
         }

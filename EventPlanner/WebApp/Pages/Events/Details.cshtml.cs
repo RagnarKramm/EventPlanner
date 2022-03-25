@@ -26,11 +26,11 @@ namespace WebApp.Pages.Events
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             
-            Participant = await _context.Participants
-                .Include(p => p.Event)
-                .Include(p => p.ParticipantType)
-                .Include(p => p.PaymentOption).Where(participant => participant.EventId == id).ToListAsync();
-            
+            // Participant = await _context.Participants
+            //     .Include(p => p.Event)
+            //     .Include(p => p.ParticipantType)
+            //     .Include(p => p.PaymentOption).Where(participant => participant.EventId == id).ToListAsync();
+            //
             if (id == null)
             {
                 return NotFound();

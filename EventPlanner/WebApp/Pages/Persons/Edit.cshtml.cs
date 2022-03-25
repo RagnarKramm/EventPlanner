@@ -1,4 +1,4 @@
-
+#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
 
-namespace WebApp.Pages.Participants
+namespace WebApp.Pages.Persons
 {
     public class EditModel : PageModel
     {
@@ -22,12 +22,7 @@ namespace WebApp.Pages.Participants
         }
 
         [BindProperty]
-        public Participant? Participant { get; set; }
-
-        public SelectList? PaymentOptionsSelectList { get; set; }
-
-        public string? ErrorMessage { get; set; }
-
+        public Person Person { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -36,17 +31,15 @@ namespace WebApp.Pages.Participants
                 return NotFound();
             }
 
-            Participant = await _context.Participants
+            Person = await _context.Persons
                 .Include(p => p.Event)
-                .Include(p => p.ParticipantType)
                 .Include(p => p.PaymentOption).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Participant == null)
+            if (Person == null)
             {
                 return NotFound();
             }
            ViewData["EventId"] = new SelectList(_context.Events, "Id", "Id");
-           ViewData["ParticipantTypeId"] = new SelectList(_context.ParticipantTypes, "Id", "Id");
            ViewData["PaymentOptionId"] = new SelectList(_context.PaymentOptions, "Id", "Id");
             return Page();
         }
@@ -59,16 +52,8 @@ namespace WebApp.Pages.Participants
             {
                 return Page();
             }
-            var participantType = await _context.ParticipantTypes.FirstAsync(type => type.Id == Participant!.ParticipantTypeId);
 
-            
-            if (Participant!.AdditionalInformation.Length > participantType.DescriptionLimit)
-            {
-                ErrorMessage = $"Kirjelduse limiit on {participantType.DescriptionLimit} märki, palun sisestage vähem kui {participantType.DescriptionLimit} märki!";
-                return Page();
-            }
-
-            _context.Attach(Participant!).State = EntityState.Modified;
+            _context.Attach(Person).State = EntityState.Modified;
 
             try
             {
@@ -76,7 +61,7 @@ namespace WebApp.Pages.Participants
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ParticipantExists(Participant!.Id))
+                if (!PersonExists(Person.Id))
                 {
                     return NotFound();
                 }
@@ -86,12 +71,12 @@ namespace WebApp.Pages.Participants
                 }
             }
 
-            return RedirectToPage("/Events/Details", new{id = Participant!.EventId});
+            return RedirectToPage("./Index");
         }
 
-        private bool ParticipantExists(int id)
+        private bool PersonExists(int id)
         {
-            return _context.Participants.Any(e => e.Id == id);
+            return _context.Persons.Any(e => e.Id == id);
         }
     }
 }

@@ -1,4 +1,4 @@
-
+#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
 
-namespace WebApp.Pages.Participants
+namespace WebApp.Pages.Persons
 {
     public class DeleteModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace WebApp.Pages.Participants
         }
 
         [BindProperty]
-        public Participant? Participant { get; set; }
+        public Person Person { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,12 +30,11 @@ namespace WebApp.Pages.Participants
                 return NotFound();
             }
 
-            Participant = await _context.Participants
+            Person = await _context.Persons
                 .Include(p => p.Event)
-                .Include(p => p.ParticipantType)
                 .Include(p => p.PaymentOption).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Participant == null)
+            if (Person == null)
             {
                 return NotFound();
             }
@@ -49,15 +48,15 @@ namespace WebApp.Pages.Participants
                 return NotFound();
             }
 
-            Participant = await _context.Participants.FindAsync(id);
+            Person = await _context.Persons.FindAsync(id);
 
-            if (Participant != null)
+            if (Person != null)
             {
-                _context.Participants.Remove(Participant);
+                _context.Persons.Remove(Person);
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("/Events/Details", new{id = Participant!.EventId});
+            return RedirectToPage("./Index");
         }
     }
 }

@@ -11,7 +11,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages().AddMvcOptions(options =>
+{
+    options.MaxModelValidationErrors = 50;
+    options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+        _ => "See väli on kohustuslik!");
+});
 
 var app = builder.Build();
 
