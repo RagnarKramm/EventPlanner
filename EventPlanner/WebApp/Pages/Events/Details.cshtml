@@ -89,7 +89,7 @@
                                     <p>Ühtegi eraisikut pole lisatud!</p>
                                     @if (Model.IsInFuture(Model.Event.HappeningAt))
                                     {
-                                        <a class="btn btn-outline-primary" asp-page="/Persons/Create" asp-route-eventId="@Model.Event.Id">Lisan eraisiku</a>
+                                        <a class="btn btn-outline-dark" asp-page="/Persons/Create" asp-route-eventId="@Model.Event.Id">Lisan eraisiku</a>
                                     }
                                 }
                             </div>
@@ -139,7 +139,7 @@
                                     <p>Ühtegi ettevõtet veel lisatud!</p>
                                     @if (Model.IsInFuture(Model.Event.HappeningAt))
                                     {
-                                        <a class="btn btn-outline-primary" asp-page="/Businesses/Create" asp-route-eventId="@Model.Event.Id">Lisan ettevõtte</a>
+                                        <a class="btn btn-outline-dark" asp-page="/Businesses/Create" asp-route-eventId="@Model.Event.Id">Lisan ettevõtte</a>
                                     }
                                 }
                             </div>
@@ -152,15 +152,15 @@
                 <p>Ühtegi külalist pole veel lisatud!</p>
                 @if (Model.IsInFuture(Model.Event.HappeningAt))
                 {
-                    <a class="btn btn-outline-primary" asp-page="/Persons/Create" asp-route-eventId="@Model.Event.Id">Lisan eraisiku</a>
-                    <a class="btn btn-outline-primary" asp-page="/Businesses/Create" asp-route-eventId="@Model.Event.Id">Lisan ettevõtte</a>
+                    <a class="btn btn-outline-dark" asp-page="/Persons/Create" asp-route-eventId="@Model.Event.Id">Lisan eraisiku</a>
+                    <a class="btn btn-outline-dark" asp-page="/Businesses/Create" asp-route-eventId="@Model.Event.Id">Lisan ettevõtte</a>
                 }
             }
         </dd>
     </dl>
 </div>
 <div>
-    <a class="btn btn-outline-primary" asp-page="/Index">Tagasi</a>
-    <a class="btn btn-outline-primary" asp-page="./Edit" asp-route-id="@Model.Event!.Id">Muuda andmeid</a>
+    <a class="btn btn-outline-dark" asp-page="/Index">Tagasi</a>
+    <a class="btn btn-outline-dark" asp-page="./Edit" asp-route-id="@Model.Event!.Id">Muuda andmeid</a>
 </div>
 

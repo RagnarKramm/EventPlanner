@@ -24,3 +24,13 @@ body {
 a {
   color: black;
 }
+
+.btn-dark:hover {
+  color: #fff;
+  background-color: #4f5050;
+  border-color: #2c3034;
+}
+
+header, footer, thead {
+  background-color: #f7fff2;
+}

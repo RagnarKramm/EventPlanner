@@ -40,14 +40,14 @@
             <input type="hidden" asp-for="Business!.EventId"/>
             <input type="hidden" asp-for="Business!.Id"/>
             <div class="form-group">
-                <input type="submit" value="Salvesta" class="btn btn-primary" />
+                <input type="submit" value="Salvesta" class="btn btn-dark" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a class="btn btn-outline-primary" asp-page="./Details" asp-route-id="@Model.Business!.Id">Tagasi</a>
+    <a class="btn btn-outline-dark" asp-page="./Details" asp-route-id="@Model.Business!.Id">Tagasi</a>
 </div>
 
 @section Scripts {
