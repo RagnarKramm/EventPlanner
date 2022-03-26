@@ -32,7 +32,8 @@ namespace WebApp.Pages.Events
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid && Event == null)
+            
+            if (!ModelState.IsValid)
             {
                 return Page();
             }

@@ -67,7 +67,6 @@ public class DataAccessLayerTests
 
         // Assert
         Assert.Empty(db.Events);
-
     }
 
     [Fact]
@@ -132,7 +131,7 @@ public class DataAccessLayerTests
             IdCode = "50211244205",
             ParticipantCount = 1,
             AdditionalInfo = "Mulle meeldivad vaarikad ja muud marjad.",
-            EventId = id
+            Id = id
         };
         db.Persons.Add(person);
         await db.SaveChangesAsync();
@@ -184,7 +183,7 @@ public class DataAccessLayerTests
             RegisterCode = "19472819",
             ParticipantCount = 31,
             AdditionalInfo = "Meie firmast tuleb kaks inimest, kes soovivad taimset toitu.",
-            EventId = id
+            Id = id
         };
         db.Businesses.Add(business);
         await db.SaveChangesAsync();

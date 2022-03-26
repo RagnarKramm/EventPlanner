@@ -56,12 +56,10 @@ namespace WebApp.Pages.Events
                 ErrorMessage = "Valitud aeg on minevikus, palun valige aeg mis on veel tulemas!";
                 return Page();
             }
-
-            _context.Attach(Event!).State = EntityState.Modified;
-
+            
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.EditEventAsync(Event);
             }
             catch (DbUpdateConcurrencyException)
             {

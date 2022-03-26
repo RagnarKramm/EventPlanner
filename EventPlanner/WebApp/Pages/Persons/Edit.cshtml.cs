@@ -53,12 +53,11 @@ namespace WebApp.Pages.Persons
             {
                 return Page();
             }
-
-            _context.Attach(Person!).State = EntityState.Modified;
-
+            
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.EditPersonAsync(Person!);
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,6 +72,7 @@ namespace WebApp.Pages.Persons
             }
 
             return RedirectToPage("./Details", new {id = Person!.Id});
+
         }
 
         private bool PersonExists(int id)

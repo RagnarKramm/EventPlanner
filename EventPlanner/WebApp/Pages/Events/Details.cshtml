@@ -87,7 +87,7 @@
                                 else
                                 {
                                     <p>Ühtegi eraisikut pole lisatud!</p>
-                                    @if (DetailsModel.IsInFuture(Model.Event.HappeningAt))
+                                    @if (IndexModel.IsInFuture(Model.Event.HappeningAt))
                                     {
                                         <a class="btn btn-outline-dark" asp-page="/Persons/Create" asp-route-eventId="@Model.Event.Id">Lisan eraisiku</a>
                                     }
@@ -137,7 +137,7 @@
                                 else
                                 {
                                     <p>Ühtegi ettevõtet pole lisatud!</p>
-                                    @if (DetailsModel.IsInFuture(Model.Event.HappeningAt))
+                                    @if (IndexModel.IsInFuture(Model.Event.HappeningAt))
                                     {
                                         <a class="btn btn-outline-dark" asp-page="/Businesses/Create" asp-route-eventId="@Model.Event.Id">Lisan ettevõtte</a>
                                     }
@@ -150,7 +150,7 @@
             else
             {
                 <p>Ühtegi külalist pole veel lisatud!</p>
-                @if (DetailsModel.IsInFuture(Model.Event.HappeningAt))
+                @if (IndexModel.IsInFuture(Model.Event.HappeningAt))
                 {
                     <a class="btn btn-outline-dark" asp-page="/Persons/Create" asp-route-eventId="@Model.Event.Id">Lisan eraisiku</a>
                     <a class="btn btn-outline-dark" asp-page="/Businesses/Create" asp-route-eventId="@Model.Event.Id">Lisan ettevõtte</a>

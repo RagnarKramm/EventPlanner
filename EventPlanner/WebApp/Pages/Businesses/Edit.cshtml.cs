@@ -55,11 +55,11 @@ namespace WebApp.Pages.Businesses
                 return Page();
             }
 
-            _context.Attach(Business!).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.EditBusinessAsync(Business!);
+
             }
             catch (DbUpdateConcurrencyException)
             {

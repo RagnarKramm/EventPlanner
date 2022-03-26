@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using WebApp.DAL;
@@ -59,7 +60,7 @@ public class EventDetailsPageTests
         };
         
         mockAppDbContext.Setup(
-            db => db.GetEventById(testEvent.Id)).Returns(Task.FromResult(testEvent));
+            db => db.GetEventById(testEvent.Id)).Returns(Task.FromResult(testEvent)!);
         mockAppDbContext.Setup(db => db.GetBusinessesForEventAsync(testEvent.Id)).Returns(Task.FromResult(expectedBusinesses));
         
         var pageModel = new DetailsModel(mockAppDbContext.Object);
@@ -118,7 +119,7 @@ public class EventDetailsPageTests
         };
         
         mockAppDbContext.Setup(
-            db => db.GetEventById(testEvent.Id)).Returns(Task.FromResult(testEvent));
+            db => db.GetEventById(testEvent.Id)).Returns(Task.FromResult(testEvent)!);
         mockAppDbContext.Setup(db => db.GetPersonsForEventAsync(testEvent.Id)).Returns(Task.FromResult(expectedPersons));
         
         var pageModel = new DetailsModel(mockAppDbContext.Object);
@@ -134,5 +135,23 @@ public class EventDetailsPageTests
         Assert.Equal(
             expectedPersons.OrderBy(p => p.Id).Select(p => p.IdCode), 
             actualPersons.OrderBy(p => p.Id).Select(p => p.IdCode));
+    }
+
+    [Fact]
+    public async Task OnGetAsync_PageNotFound_WhenEventIsNull()
+    {
+        // Arrange
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase("InMemoryDb");
+        
+        var mockAppDbContext = new Mock<AppDbContext>(optionsBuilder.Options);
+
+        var pageModel = new DetailsModel(mockAppDbContext.Object);
+        
+        // Act
+        var result = await pageModel.OnGetAsync(null);
+        
+        // Assert
+        Assert.IsType<NotFoundResult>(result);
     }
 }

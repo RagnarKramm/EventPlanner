@@ -25,7 +25,7 @@ namespace WebApp.Pages.Events
         public IList<Person>? Persons { get;set; }
 
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
 
             Businesses = await _context.GetBusinessesForEventAsync(id);
@@ -38,11 +38,6 @@ namespace WebApp.Pages.Events
                 return NotFound();
             }
             return Page();
-        }
-
-        public static bool IsInFuture(DateTime dateTime)
-        {
-            return dateTime.CompareTo(DateTime.Now) > 0;
         }
     }
 }

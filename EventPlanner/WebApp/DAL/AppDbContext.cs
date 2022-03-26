@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Domain;
 
@@ -27,14 +29,20 @@ public class AppDbContext : DbContext
             .ToListAsync();
     }
 
-    public virtual async Task<Event> GetEventById(int id)
+    public virtual async Task<Event?> GetEventById(int? id)
     {
-        return await Events.FirstAsync(e => e.Id == id);
+        return await Events.FirstOrDefaultAsync(e => e.Id == id);
     }
     
     public virtual async Task AddEventAsync(Event e)
     {
         await Events.AddAsync(e);
+        await SaveChangesAsync();
+    }
+    
+    public virtual async Task EditEventAsync(Event e)
+    {
+        Attach(e).State = EntityState.Modified;
         await SaveChangesAsync();
     }
     
@@ -55,7 +63,7 @@ public class AppDbContext : DbContext
             .ToListAsync();
     }
     
-    public virtual async Task<List<Business>> GetBusinessesForEventAsync(int id)
+    public virtual async Task<List<Business>> GetBusinessesForEventAsync(int? id)
     {
         return await Businesses.Where(b => b.EventId == id)
             .AsNoTracking()
@@ -65,6 +73,12 @@ public class AppDbContext : DbContext
     public virtual async Task AddBusinessAsync(Business business)
     {
         await Businesses.AddAsync(business);
+        await SaveChangesAsync();
+    }
+    
+    public virtual async Task EditBusinessAsync(Business business)
+    {
+        Attach(business).State = EntityState.Modified;
         await SaveChangesAsync();
     }
 
@@ -85,7 +99,7 @@ public class AppDbContext : DbContext
             .ToListAsync();
     }
 
-    public virtual async Task<List<Person>> GetPersonsForEventAsync(int id)
+    public virtual async Task<List<Person>> GetPersonsForEventAsync(int? id)
     {
         return await Persons.Where(p => p.EventId == id)
             .AsNoTracking()
@@ -95,6 +109,12 @@ public class AppDbContext : DbContext
     public virtual async Task AddPersonAsync(Person person)
     {
         await Persons.AddAsync(person);
+        await SaveChangesAsync();
+    }
+
+    public virtual async Task EditPersonAsync(Person person)
+    {
+        Attach(person).State = EntityState.Modified;
         await SaveChangesAsync();
     }
 

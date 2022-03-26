@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,16 +12,16 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using WebApp.DAL;
 using WebApp.Domain;
-using WebApp.Pages.Persons;
+using WebApp.Pages.Events;
 using Xunit;
 
 namespace Tests.UnitTests;
 
-public class ParticipantEditingPageTests
+public class EventEditPageTests
 {
     
     [Fact]
-    public async Task OnPostEditPersonAsync_ReturnsAPageResult_WhenModelStateIsInvalid()
+    public async Task OnPostEditEventAsync_ReturnsAPageResult_WhenModelStateIsInvalid()
     {
         // Arrange
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
@@ -42,112 +44,45 @@ public class ParticipantEditingPageTests
             TempData = tempData,
             Url = new UrlHelper(actionContext)
         };
-        pageModel.ModelState.AddModelError("Person.FirstName", "The FirstName field is required.");
+        pageModel.ModelState.AddModelError("Event.Name", "The Name field is required.");
 
         // Act
         var result = await pageModel.OnPostAsync();
 
         // Assert
         Assert.IsType<PageResult>(result);
-    }
-
-    [Fact]
-    public async Task OnPostEditBusinessAsync_ReturnsAPageResult_WhenModelStateIsInvalid()
-    {
-         // Arrange
-        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("InMemoryDb");
-        
-        var mockAppDbContext = new Mock<AppDbContext>(optionsBuilder.Options);
-        var httpContext = new DefaultHttpContext();
-        var modelState = new ModelStateDictionary();
-        var actionContext = new ActionContext(httpContext, new RouteData(), new PageActionDescriptor(), modelState);
-        var modelMetadataProvider = new EmptyModelMetadataProvider();
-        var viewData = new ViewDataDictionary(modelMetadataProvider, modelState);
-        var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
-        var pageContext = new PageContext(actionContext)
-        {
-            ViewData = viewData
-        };
-        var pageModel = new WebApp.Pages.Businesses.EditModel(mockAppDbContext.Object)
-        {
-            PageContext = pageContext,
-            TempData = tempData,
-            Url = new UrlHelper(actionContext)
-        };
-        pageModel.ModelState.AddModelError("Business.RegisterCode", "The RegisterCode field is required.");
-
-        // Act
-        var result = await pageModel.OnPostAsync();
-
-        // Assert
-        Assert.IsType<PageResult>(result);
-    }
-
-    [Fact]
-    public async Task OnPostEditPersonAsync_ReturnsARedirectToPageResult_WhenModelStateIsValid()
-    {
-        // Arrange
-        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase("InMemoryDb");
-        var mockAppDbContext = new Mock<AppDbContext>(optionsBuilder.Options);
-        var testPerson = new Person()
-        {
-            FirstName = "Mari",
-            LastName = "Vaarikas",
-            IdCode = "60211244205",
-            ParticipantCount = 1,
-            AdditionalInfo = "Mulle meeldivad maasikad ja muud marjad.",
-            EventId = 1
-        };
-        mockAppDbContext.Setup(db => db.EditPersonAsync(testPerson)).Returns(Task.FromResult(testPerson));
-        var httpContext = new DefaultHttpContext();
-        var modelState = new ModelStateDictionary();
-        var actionContext = new ActionContext(httpContext, new RouteData(), new PageActionDescriptor(), modelState);
-        var modelMetadataProvider = new EmptyModelMetadataProvider();
-        var viewData = new ViewDataDictionary(modelMetadataProvider, modelState);
-        var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
-        var pageContext = new PageContext(actionContext)
-        {
-            ViewData = viewData
-        };
-        var pageModel = new EditModel(mockAppDbContext.Object)
-        {
-            PageContext = pageContext,
-            TempData = tempData,
-            Url = new UrlHelper(actionContext)
-        };
-        pageModel.Person = testPerson;
-
-        // Act
-        // A new ModelStateDictionary is valid by default.
-        var result = await pageModel.OnPostAsync();
-
-        // Assert
-        Assert.IsType<RedirectToPageResult>(result);
-        var redirectToPageResult = result as RedirectToPageResult;
-        Assert.NotNull(redirectToPageResult!.PageName);
-        Assert.Equal("./Details", redirectToPageResult.PageName);
     }
     
-
+    
     [Fact]
-    public async Task OnPostEditBusinessAsync_ReturnsARedirectToPageResult_WhenModelStateIsValid()
+    public async Task OnPostEditMessageAsync_ReturnsARedirectToPageResult_WhenModelStateIsValid()
     {
-        
         // Arrange
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase("InMemoryDb");
         var mockAppDbContext = new Mock<AppDbContext>(optionsBuilder.Options);
-        var testBusiness = new Business
+        
+        var expectedEvents = new List<Event>
         {
-            BusinessName = "Puud koju OÜ",
-            RegisterCode = "19472819",
-            ParticipantCount = 31,
-            AdditionalInfo = "Meie firmast tuleb kaks inimest, kes soovivad taimset toitu.",
-            EventId = 1
+            new Event
+            {
+                Name = "Toidu TESTIMISE mess",
+                Description = "See üritus on loodud, et testida toitu ja ka ürituse lisamist anbmebaasi.",
+                HappeningAt = DateTime.UtcNow.AddMonths(1),
+                Location = "Tammsaare park.",
+                Id = 1
+            },
+            new Event
+            {
+                Name = "Tootmise testimise järelpidu",
+                Description = "Peale pikka testimist tuleb veidi pidutseda ka.",
+                HappeningAt = DateTime.UtcNow.AddDays(4),
+                Location = "Klubi Pubi.",
+                Id = 2
+            }
         };
-        mockAppDbContext.Setup(db => db.EditBusinessAsync(testBusiness)).Returns(Task.FromResult(testBusiness));
+        
+        mockAppDbContext.Setup(db => db.GetEventsAndParticipantsAsync()).Returns(Task.FromResult(expectedEvents));
         var httpContext = new DefaultHttpContext();
         var modelState = new ModelStateDictionary();
         var actionContext = new ActionContext(httpContext, new RouteData(), new PageActionDescriptor(), modelState);
@@ -158,13 +93,14 @@ public class ParticipantEditingPageTests
         {
             ViewData = viewData
         };
-        var pageModel = new WebApp.Pages.Businesses.EditModel(mockAppDbContext.Object)
+        var pageModel = new EditModel(mockAppDbContext.Object)
         {
             PageContext = pageContext,
             TempData = tempData,
             Url = new UrlHelper(actionContext)
         };
-        pageModel.Business = testBusiness;
+
+        pageModel.Event = expectedEvents[0];
 
         // Act
         // A new ModelStateDictionary is valid by default.
@@ -174,6 +110,50 @@ public class ParticipantEditingPageTests
         Assert.IsType<RedirectToPageResult>(result);
         var redirectToPageResult = result as RedirectToPageResult;
         Assert.NotNull(redirectToPageResult!.PageName);
-        Assert.Equal("./Details", redirectToPageResult.PageName);
+        Assert.Equal("/Index", redirectToPageResult.PageName);
+    }
+    
+    [Fact]
+    public async Task OnPostEditMessageAsync_ReturnsError_WhenTimeIsInPast()
+    {
+        // Arrange
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase("InMemoryDb");
+        var mockAppDbContext = new Mock<AppDbContext>(optionsBuilder.Options);
+        
+        var testEvent = new Event
+            {
+                Name = "",
+                Description = "See üritus on loodud, et testida toitu ja ka ürituse lisamist anbmebaasi.",
+                HappeningAt = DateTime.MinValue.AddMonths(1),
+                Location = "Tammsaare park.",
+                Id = 1
+            };
+        
+        var httpContext = new DefaultHttpContext();
+        var modelState = new ModelStateDictionary();
+        var actionContext = new ActionContext(httpContext, new RouteData(), new PageActionDescriptor(), modelState);
+        var modelMetadataProvider = new EmptyModelMetadataProvider();
+        var viewData = new ViewDataDictionary(modelMetadataProvider, modelState);
+        var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+        var pageContext = new PageContext(actionContext)
+        {
+            ViewData = viewData
+        };
+        var pageModel = new EditModel(mockAppDbContext.Object)
+        {
+            PageContext = pageContext,
+            TempData = tempData,
+            Url = new UrlHelper(actionContext)
+        };
+        pageModel.Event = testEvent;
+
+        // Act
+        // A new ModelStateDictionary is valid by default.
+        var result = await pageModel.OnPostAsync();
+
+        // Assert
+        Assert.IsType<PageResult>(result);
+        Assert.Equal("Valitud aeg on minevikus, palun valige aeg mis on veel tulemas!", pageModel.ErrorMessage);
     }
 }

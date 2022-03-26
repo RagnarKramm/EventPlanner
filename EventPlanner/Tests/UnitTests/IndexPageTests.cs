@@ -15,7 +15,7 @@ public class IndexPageTests
 {
     
     [Fact]
-    public async Task? AddingEventAndParticipantsToDb_ParticipantCountForEventCorrect()
+    public async Task AddingEventAndParticipantsToDb_ParticipantCountForEventCorrect()
     {
         await using var db = new AppDbContext(Utilities.TestDbContextOptions());
 
@@ -28,6 +28,22 @@ public class IndexPageTests
         
         //Assert
         Assert.Equal(34, participants);
+    }
+
+    [Fact]
+    public async Task IsTimeInFutureTest()
+    {
+        // Assign
+        var futureTime = DateTime.Now.AddHours(21);
+        var pastTime = DateTime.MinValue;
+        
+        // Act
+        var isInFuture = IndexModel.IsInFuture(futureTime);
+        var isNotInFuture = IndexModel.IsInFuture(pastTime);
+
+        // Assert
+        Assert.True(isInFuture);
+        Assert.False(isNotInFuture);
     }
     
     [Fact]
@@ -72,6 +88,4 @@ public class IndexPageTests
             expectedEvents.OrderBy(e => e.Id).Select(e => e.Name), 
             actualEvents.OrderBy(e => e.Id).Select(e => e.Name));
     }
-    
-    
 }
