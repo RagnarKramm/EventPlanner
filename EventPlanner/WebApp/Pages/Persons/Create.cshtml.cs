@@ -45,8 +45,7 @@ namespace WebApp.Pages.Persons
                 return Page();
             }
 
-            _context.Persons.Add(Person!);
-            await _context.SaveChangesAsync();
+            await _context.AddPersonAsync(Person!);
 
             return RedirectToPage("/Index");
         }

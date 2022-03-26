@@ -39,7 +39,7 @@
                 </thead>
                 <tbody>
                 @foreach (var item in Model.Event!) {
-                    @if (Model.IsInFuture(item.HappeningAt))
+                    @if (IndexModel.IsInFuture(item.HappeningAt))
                     {
                         <tr>
                             <td>
@@ -111,9 +111,9 @@
                     <tbody>
                     @foreach (var item in Model.Event.Reverse())
                     {
-                        @if (!Model.IsInFuture(item.HappeningAt))
+                        @if (!IndexModel.IsInFuture(item.HappeningAt))
                         {
-                            <tr>
+                            <tr style="height: 48px">
                                 <td>
                                     <a asp-page="/Events/Details" asp-route-id="@item.Id">@item.Name</a>
                                 </td>

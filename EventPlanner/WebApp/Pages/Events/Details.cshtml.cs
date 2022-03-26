@@ -25,18 +25,13 @@ namespace WebApp.Pages.Events
         public IList<Person>? Persons { get;set; }
 
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            
-            Businesses = await _context.Businesses.Where(business => business.EventId == id).ToListAsync();
-            Persons = await _context.Persons.Where(person => person.EventId == id).ToListAsync();
 
-            if (id == null)
-            {
-                return NotFound();
-            }
+            Businesses = await _context.GetBusinessesForEventAsync(id);
+            Persons = await _context.GetPersonsForEventAsync(id);
 
-            Event = await _context.Events.FirstOrDefaultAsync(m => m.Id == id);
+            Event = await _context.GetEventById(id);
 
             if (Event == null)
             {
@@ -45,7 +40,7 @@ namespace WebApp.Pages.Events
             return Page();
         }
 
-        public bool IsInFuture(DateTime dateTime)
+        public static bool IsInFuture(DateTime dateTime)
         {
             return dateTime.CompareTo(DateTime.Now) > 0;
         }

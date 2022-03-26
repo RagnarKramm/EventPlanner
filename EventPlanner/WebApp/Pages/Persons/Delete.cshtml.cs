@@ -40,22 +40,14 @@ namespace WebApp.Pages.Persons
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Person = await _context.Persons.FindAsync(id);
-
             if (Person != null)
             {
-                _context.Persons.Remove(Person);
-                await _context.SaveChangesAsync();
+                await _context.DeletePersonAsync(id);
             }
 
-            return RedirectToPage("/Events/Details", new{ id = Person!.EventId});
+            return RedirectToPage("/Events/Details", new{ id = Person?.EventId });
         }
     }
 }

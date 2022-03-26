@@ -23,9 +23,7 @@ namespace WebApp.Pages
 
         public async Task OnGetAsync()
         {
-            Event = await _context.Events.Include(item => item.Persons)
-                .Include(item => item.Businesses).OrderBy(item => item.HappeningAt).ToListAsync();
-
+            Event = await _context.GetEventsAndParticipantsAsync();
         }
 
         public static int GetParticipantCount(Event theEvent)
@@ -45,7 +43,7 @@ namespace WebApp.Pages
             return participantCount;
         }
         
-        public bool IsInFuture(DateTime dateTime)
+        public static bool IsInFuture(DateTime dateTime)
         {
             return dateTime.CompareTo(DateTime.Now) > 0;
         }

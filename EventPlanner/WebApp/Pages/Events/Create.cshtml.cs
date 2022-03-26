@@ -37,14 +37,13 @@ namespace WebApp.Pages.Events
                 return Page();
             }
             
-            if (Event!.HappeningAt.CompareTo(DateTime.Now) < 0)
+            if (Event != null && Event!.HappeningAt.CompareTo(DateTime.Now) < 0)
             {
                 ErrorMessage = "Valitud aeg on minevikus, palun valige aeg mis on veel tulemas!";
                 return Page();
             }
 
-            _context.Events.Add(Event);
-            await _context.SaveChangesAsync();
+            await _context.AddEventAsync(Event!);
 
             return RedirectToPage("/Index");
         }

@@ -45,8 +45,7 @@ namespace WebApp.Pages.Businesses
                 return Page();
             }
 
-            _context.Businesses.Add(Business!);
-            await _context.SaveChangesAsync();
+            await _context.AddBusinessAsync(Business!);
 
             return RedirectToPage("/Index");
         }

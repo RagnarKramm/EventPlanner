@@ -3,61 +3,27 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
-using WebApp.Pages;
 using Xunit;
-using Xunit.Sdk;
 
 namespace Tests.UnitTests;
 
-public class UnitTests
+public class DataAccessLayerTests
 {
-    
-    // seed data
-    private readonly Event _testEvent = new Event
-    {
-        Name = "Toidu TESTIMISE mess",
-        Description = "See üritus on loodud, et testida toitu ja ka ürituse lisamist anbmebaasi.",
-        HappeningAt = DateTime.UtcNow.AddMonths(1),
-        Location = "Tammsaare park."
-    };
-
-    private readonly PaymentOption _paymentOptionCash = new PaymentOption
-    {
-        Name = "Sularaha",
-        Description = "Makse sularahaga"
-    };
-    
-    private readonly PaymentOption _paymentOptionTransfer = new PaymentOption
-    {
-        Name = "Pangaülekanne",
-        Description = "Makse pangaülekandega"
-    };
-
-    private readonly Person _person = new Person()
-    {
-        FirstName = "Martin",
-        LastName = "Maasikas",
-        IdCode = "50211244205",
-        ParticipantCount = 1,
-        AdditionalInfo = "Mulle meeldivad vaarikad ja muud marjad."
-    };
-    
-    private readonly Business _business = new Business
-    {
-        BusinessName = "Puud koju OÜ",
-        RegisterCode = "19472819",
-        ParticipantCount = 31,
-        AdditionalInfo = "Meie firmast tuleb kaks inimest, kes soovivad taimset toitu."
-    };
-    
     [Fact]
     public async Task TestCreateReadUpdateDeleteOnEvent()
     {
         await using var db = new AppDbContext(Utilities.TestDbContextOptions());
         // Arrange
         var id = 99;
-        _testEvent.Id = id;
-        db.Events.Add(_testEvent);
+        var testEvent = new Event
+        {
+            Name = "Toidu TESTIMISE mess",
+            Description = "See üritus on loodud, et testida toitu ja ka ürituse lisamist anbmebaasi.",
+            HappeningAt = DateTime.UtcNow.AddMonths(1),
+            Location = "Tammsaare park.",
+            Id = id
+        };
+        db.Events.Add(testEvent);
         await db.SaveChangesAsync();
 
 
@@ -66,16 +32,16 @@ public class UnitTests
 
         // Assert 
         Assert.Equal(
-            _testEvent.Name, 
+            testEvent.Name, 
             eventFromDb.Name);
         Assert.Equal(
-            _testEvent.Description, 
+            testEvent.Description, 
             eventFromDb.Description);
         Assert.Equal(
-            _testEvent.HappeningAt, 
+            testEvent.HappeningAt, 
             eventFromDb.HappeningAt);
         Assert.Equal(
-            _testEvent.Location, 
+            testEvent.Location, 
             eventFromDb.Location);
         
         // Update
@@ -110,8 +76,13 @@ public class UnitTests
         await using var db = new AppDbContext(Utilities.TestDbContextOptions());
         // Arrange
         var id = 42;
-        _paymentOptionCash.Id = id;
-        db.PaymentOptions.Add(_paymentOptionCash);
+        var paymentOptionCash = new PaymentOption
+        {
+            Name = "Sularaha",
+            Description = "Makse sularahaga",
+            Id = id
+        };
+        db.PaymentOptions.Add(paymentOptionCash);
         await db.SaveChangesAsync();
         
         // Act
@@ -119,10 +90,10 @@ public class UnitTests
 
         // Assert 
         Assert.Equal(
-            _paymentOptionCash.Name, 
+            paymentOptionCash.Name, 
             paymentOptionFromDb.Name);
         Assert.Equal(
-            _paymentOptionCash.Description, 
+            paymentOptionCash.Description, 
             paymentOptionFromDb.Description);
         
         // Update
@@ -154,8 +125,16 @@ public class UnitTests
         await using var db = new AppDbContext(Utilities.TestDbContextOptions());
         // Arrange
         var id = 52;
-        _person.Id = id;
-        db.Persons.Add(_person);
+        var person = new Person()
+        {
+            FirstName = "Martin",
+            LastName = "Maasikas",
+            IdCode = "50211244205",
+            ParticipantCount = 1,
+            AdditionalInfo = "Mulle meeldivad vaarikad ja muud marjad.",
+            EventId = id
+        };
+        db.Persons.Add(person);
         await db.SaveChangesAsync();
         
         // Act
@@ -163,10 +142,10 @@ public class UnitTests
 
         // Assert 
         Assert.Equal(
-            _person.FirstName, 
+            person.FirstName, 
             personFromDb.FirstName);
         Assert.Equal(
-            _person.LastName, 
+            person.LastName, 
             personFromDb.LastName);
         
         // Update
@@ -199,8 +178,15 @@ public class UnitTests
         await using var db = new AppDbContext(Utilities.TestDbContextOptions());
         // Arrange
         var id = 12;
-        _business.Id = id;
-        db.Businesses.Add(_business);
+        var business = new Business
+        {
+            BusinessName = "Puud koju OÜ",
+            RegisterCode = "19472819",
+            ParticipantCount = 31,
+            AdditionalInfo = "Meie firmast tuleb kaks inimest, kes soovivad taimset toitu.",
+            EventId = id
+        };
+        db.Businesses.Add(business);
         await db.SaveChangesAsync();
         
         // Act
@@ -208,10 +194,10 @@ public class UnitTests
 
         // Assert 
         Assert.Equal(
-            _business.BusinessName, 
+            business.BusinessName, 
             businessFromDb.BusinessName);
         Assert.Equal(
-            _business.RegisterCode, 
+            business.RegisterCode, 
             businessFromDb.RegisterCode);
         
         // Update
@@ -227,57 +213,14 @@ public class UnitTests
         Assert.Equal(newBusinessName, updatedBusiness.BusinessName);
         
         // Delete
-        var business = await db.Businesses.FirstAsync(item => item.Id == id);
+        var businessToDelete = await db.Businesses.FirstAsync(item => item.Id == id);
         
         // Act
-        db.Businesses.Remove(business);
+        db.Businesses.Remove(businessToDelete);
         await db.SaveChangesAsync();
 
         // Assert
         Assert.Empty(db.Businesses);
         
-    }
-    
-    [Fact]
-    public async Task? AddingEventAndParticipantsToDb_ParticipantCountForEventCorrect()
-    {
-        await using var db = new AppDbContext(Utilities.TestDbContextOptions());
-
-        // Assign
-        var eventId = 2;
-        var cashPaymentId = 4;
-        var transferPaymentId = 1;
-
-        _testEvent.Id = eventId;
-        db.Events.Add(_testEvent);
-        _paymentOptionCash.Id = cashPaymentId;
-        _paymentOptionTransfer.Id = transferPaymentId;
-        db.PaymentOptions.Add(_paymentOptionCash);
-        db.PaymentOptions.Add(_paymentOptionTransfer);
-        
-        _business.PaymentOption = _paymentOptionCash;
-        _business.PaymentOptionId = cashPaymentId;
-        _business.EventId = eventId;
-
-        _person.PaymentOption = _paymentOptionTransfer;
-        _person.PaymentOptionId = transferPaymentId;
-        _person.EventId = eventId;
-        
-        db.Businesses.Add(_business);
-        db.Persons.Add(_person);
-        
-        // Act
-        var participants = IndexModel.GetParticipantCount(_testEvent);
-        var viewModel = new WebApp.Pages.Events.CreateModel(db).OnGet();
-        
-        //Assert
-        Assert.Equal(32, participants);
-    }
-
-    [Fact]
-    public async Task ParticipantCountForEvent()
-    {
-        await using var db = new AppDbContext(Utilities.TestDbContextOptions());
-
     }
 }

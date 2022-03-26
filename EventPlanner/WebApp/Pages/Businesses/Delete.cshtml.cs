@@ -41,22 +41,14 @@ namespace WebApp.Pages.Businesses
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Business = await _context.Businesses.FindAsync(id);
-
             if (Business != null)
             {
-                _context.Businesses.Remove(Business);
-                await _context.SaveChangesAsync();
+                await _context.DeleteBusinessAsync(id);
             }
-
-            return RedirectToPage("/Events/Details", new{ id = Business!.EventId});
+            
+            return RedirectToPage("/Events/Details", new{ id = Business?.EventId });
         }
     }
 }

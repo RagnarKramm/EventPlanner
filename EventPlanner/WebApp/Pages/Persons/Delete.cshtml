@@ -59,6 +59,7 @@
     </dl>
     <form method="post">
         <input type="hidden" asp-for="Person!.Id"/>
+        <input type="hidden" asp-for="Person!.EventId"/>
         <a class="btn btn-outline-dark" asp-route-id="@Model.Person!.EventId" asp-page="/Events/Details">Tagasi</a>
         <input type="submit" value="Kustuta" class="btn btn-danger"/>
     </form>

@@ -38,19 +38,11 @@ namespace WebApp.Pages.Events
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Event = await _context.Events.FindAsync(id);
-
             if (Event != null)
             {
-                _context.Events.Remove(Event);
-                await _context.SaveChangesAsync();
+                await _context.DeleteEventAsync(id);
             }
 
             return RedirectToPage("/Index");
