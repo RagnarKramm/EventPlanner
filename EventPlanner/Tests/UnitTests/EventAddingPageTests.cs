@@ -51,10 +51,9 @@ public class EventAddingPageTests
         // Assert
         Assert.IsType<PageResult>(result);
     }
-    
-    
+
     [Fact]
-    public async Task OnPostAddMessageAsync_ReturnsARedirectToPageResult_WhenModelStateIsValid()
+    public async Task OnPostAddEventAsync_ReturnsARedirectToPageResult_WhenModelStateIsValid()
     {
         // Arrange
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
@@ -113,7 +112,7 @@ public class EventAddingPageTests
     }
     
     [Fact]
-    public async Task OnPostAddMessageAsync_ReturnsError_WhenTimeIsInPast()
+    public async Task OnPostAddEventAsync_ReturnsError_WhenTimeIsInPast()
     {
         // Arrange
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
@@ -148,7 +147,6 @@ public class EventAddingPageTests
         pageModel.Event = testEvent;
 
         // Act
-        // A new ModelStateDictionary is valid by default.
         var result = await pageModel.OnPostAsync();
 
         // Assert
@@ -157,7 +155,7 @@ public class EventAddingPageTests
     }
     
     [Fact]
-    public async Task OnPostAddMessageAsync_ReturnsError_WhenTooLargeDescription()
+    public async Task OnPostAddEventAsync_ReturnsError_WhenTooLargeDescription()
     {
         // Arrange
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
@@ -190,5 +188,4 @@ public class EventAddingPageTests
         Assert.IsType<PageResult>(result);
         Assert.False(pageModel.ModelState.IsValid);
     }
-    
 }

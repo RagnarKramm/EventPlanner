@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +13,8 @@ namespace Tests.UnitTests;
 
 public class EventDeletingPageTests
 {
-    
     [Fact]
-    public async Task OnPostDeleteMessageAsync_ReturnsARedirectToPageResult()
+    public async Task OnPostDeleteEventAsync_ReturnsARedirectToPageResult()
     {
         // Arrange
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
@@ -32,12 +30,11 @@ public class EventDeletingPageTests
         Assert.IsType<RedirectToPageResult>(result);
         var redirectToPageResult = result as RedirectToPageResult;
         Assert.NotNull(redirectToPageResult!.PageName);
-        var pageRedirectedTo = redirectToPageResult.PageName;
         Assert.Equal("/Index", redirectToPageResult.PageName);
     }
 
     [Fact]
-    public async Task OnPostDeleteMessageAsync_ReturnsARedirectToPageResult_NoParticipantsRemaining()
+    public async Task OnPostDeleteEventAsync_ReturnsARedirectToPageResult_NoParticipantsRemaining()
     {
         // Arrange
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()

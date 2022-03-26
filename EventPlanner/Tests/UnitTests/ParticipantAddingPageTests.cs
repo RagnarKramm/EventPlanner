@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using WebApp.DAL;
-using WebApp.Domain;
 using WebApp.Pages.Persons;
 using Xunit;
 
@@ -19,7 +18,6 @@ namespace Tests.UnitTests;
 
 public class ParticipantAddingPageTests
 {
-
     [Fact]
     public async Task OnPostAddPersonAsync_ReturnsAPageResult_WhenModelStateIsInvalid()
     {
@@ -120,12 +118,10 @@ public class ParticipantAddingPageTests
         Assert.NotNull(redirectToPageResult!.PageName);
         Assert.Equal("/Index", redirectToPageResult.PageName);
     }
-    
 
     [Fact]
     public async Task OnPostAddBusinessAsync_ReturnsARedirectToPageResult_WhenModelStateIsValid()
     {
-        
         // Arrange
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase("InMemoryDb");
@@ -157,6 +153,4 @@ public class ParticipantAddingPageTests
         Assert.NotNull(redirectToPageResult!.PageName);
         Assert.Equal("/Index", redirectToPageResult.PageName);
     }
-
-
 }

@@ -17,7 +17,6 @@ namespace Tests.UnitTests;
 
 public class ParticipantEditingPageTests
 {
-    
     [Fact]
     public async Task OnPostEditPersonAsync_ReturnsAPageResult_WhenModelStateIsInvalid()
     {
@@ -130,7 +129,6 @@ public class ParticipantEditingPageTests
         Assert.Equal("./Details", redirectToPageResult.PageName);
     }
     
-
     [Fact]
     public async Task OnPostEditBusinessAsync_ReturnsARedirectToPageResult_WhenModelStateIsValid()
     {

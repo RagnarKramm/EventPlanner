@@ -168,7 +168,6 @@ public class DataAccessLayerTests
 
         // Assert
         Assert.Empty(db.Persons);
-        
     }
     
     [Fact]
@@ -220,6 +219,5 @@ public class DataAccessLayerTests
 
         // Assert
         Assert.Empty(db.Businesses);
-        
     }
 }

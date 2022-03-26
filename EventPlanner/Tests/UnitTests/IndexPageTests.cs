@@ -13,7 +13,6 @@ namespace Tests.UnitTests;
 
 public class IndexPageTests
 {
-    
     [Fact]
     public async Task AddingEventAndParticipantsToDb_ParticipantCountForEventCorrect()
     {

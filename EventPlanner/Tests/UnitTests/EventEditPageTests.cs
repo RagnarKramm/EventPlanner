@@ -19,7 +19,6 @@ namespace Tests.UnitTests;
 
 public class EventEditPageTests
 {
-    
     [Fact]
     public async Task OnPostEditEventAsync_ReturnsAPageResult_WhenModelStateIsInvalid()
     {
@@ -53,9 +52,8 @@ public class EventEditPageTests
         Assert.IsType<PageResult>(result);
     }
     
-    
     [Fact]
-    public async Task OnPostEditMessageAsync_ReturnsARedirectToPageResult_WhenModelStateIsValid()
+    public async Task OnPostEditEventAsync_ReturnsARedirectToPageResult_WhenModelStateIsValid()
     {
         // Arrange
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
@@ -103,7 +101,6 @@ public class EventEditPageTests
         pageModel.Event = expectedEvents[0];
 
         // Act
-        // A new ModelStateDictionary is valid by default.
         var result = await pageModel.OnPostAsync();
 
         // Assert
@@ -114,7 +111,7 @@ public class EventEditPageTests
     }
     
     [Fact]
-    public async Task OnPostEditMessageAsync_ReturnsError_WhenTimeIsInPast()
+    public async Task OnPostEditEventAsync_ReturnsError_WhenTimeIsInPast()
     {
         // Arrange
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>()
@@ -123,7 +120,7 @@ public class EventEditPageTests
         
         var testEvent = new Event
             {
-                Name = "",
+                Name = "Pidu",
                 Description = "See üritus on loodud, et testida toitu ja ka ürituse lisamist anbmebaasi.",
                 HappeningAt = DateTime.MinValue.AddMonths(1),
                 Location = "Tammsaare park.",
@@ -149,7 +146,6 @@ public class EventEditPageTests
         pageModel.Event = testEvent;
 
         // Act
-        // A new ModelStateDictionary is valid by default.
         var result = await pageModel.OnPostAsync();
 
         // Assert
