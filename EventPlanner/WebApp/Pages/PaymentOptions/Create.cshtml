@@ -8,23 +8,23 @@
 <h1>Create</h1>
 
 <h4>PaymentOption</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="PaymentOption!.Name" class="control-label"></label>
-                <input asp-for="PaymentOption!.Name" class="form-control" />
+                <input asp-for="PaymentOption!.Name" class="form-control"/>
                 <span asp-validation-for="PaymentOption!.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PaymentOption!.Description" class="control-label"></label>
-                <input asp-for="PaymentOption!.Description" class="form-control" />
+                <input asp-for="PaymentOption!.Description" class="form-control"/>
                 <span asp-validation-for="PaymentOption!.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-dark" />
+                <input type="submit" value="Create" class="btn btn-dark"/>
             </div>
         </form>
     </div>
@@ -35,5 +35,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

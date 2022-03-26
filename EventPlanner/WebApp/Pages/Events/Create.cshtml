@@ -2,39 +2,39 @@
 @model WebApp.Pages.Events.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Lisa üritus";
 }
 
 <h1>Lisa uus üritus</h1>
 
 <h4>Ürituse info</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Event!.Name" class="control-label"></label>
-                <input asp-for="Event!.Name" class="form-control" />
+                <input asp-for="Event!.Name" class="form-control" data-val-required="Ürituse nime väli on kohustuslik!"/>
                 <span asp-validation-for="Event!.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Event!.Location" class="control-label"></label>
-                <input asp-for="Event!.Location" class="form-control" />
+                <input asp-for="Event!.Location" class="form-control" data-val-required="Asukoha väli on kohustuslik!"/>
                 <span asp-validation-for="Event!.Location" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Event!.HappeningAt" class="control-label"></label>
-                <input asp-for="Event!.HappeningAt" class="form-control" />
+                <input asp-for="Event!.HappeningAt" class="form-control" data-val-required="Toimumisaja väli on kohustuslik!"/>
                 <span class="text-danger">@Model.ErrorMessage</span>
             </div>
             <div class="form-group">
                 <label asp-for="Event!.Description" class="control-label"></label>
-                <textarea asp-for="Event!.Description"  class="form-control"></textarea>
+                <textarea asp-for="Event!.Description"  class="form-control" data-val-required="Lisainfo väli on kohustuslik!"></textarea>
                 <span asp-validation-for="Event!.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Lisa üritus" class="btn btn-dark" />
+                <input type="submit" value="Lisa üritus" class="btn btn-dark"/>
             </div>
         </form>
     </div>
@@ -45,5 +45,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

@@ -1,11 +1,5 @@
-#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
 
@@ -20,7 +14,7 @@ namespace WebApp.Pages.Persons
             _context = context;
         }
 
-        public Person Person { get; set; }
+        public Person? Person { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,14 +23,13 @@ namespace WebApp.Pages.Persons
                 return NotFound();
             }
 
-            Person = await _context.Persons
-                .Include(p => p.Event)
-                .Include(p => p.PaymentOption).FirstOrDefaultAsync(m => m.Id == id);
+            Person = await _context.GetPersonById(id);
 
             if (Person == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
     }

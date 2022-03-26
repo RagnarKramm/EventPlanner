@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +19,7 @@ namespace WebApp.Pages.PaymentOptions
             _context = context;
         }
 
-        [BindProperty]
-        public PaymentOption? PaymentOption { get; set; }
+        [BindProperty] public PaymentOption? PaymentOption { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -36,6 +34,7 @@ namespace WebApp.Pages.PaymentOptions
             {
                 return NotFound();
             }
+
             return Page();
         }
 

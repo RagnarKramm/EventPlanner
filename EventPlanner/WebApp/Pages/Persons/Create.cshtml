@@ -7,39 +7,39 @@
 
 <h1>Lisa osaleja üritusele '@Model.Event.Name'</h1>
 <h4>Eraisik</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Person!.FirstName" class="control-label"></label>
-                <input asp-for="Person!.FirstName" class="form-control" />
+                <input asp-for="Person!.FirstName" class="form-control" data-val-required="Eesnime väli on kohustuslik!"/>
                 <span asp-validation-for="Person!.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Person!.LastName" class="control-label"></label>
-                <input asp-for="Person!.LastName" class="form-control" />
+                <input asp-for="Person!.LastName" class="form-control" data-val-required="Perekonnanime väli on kohustuslik!"/>
                 <span asp-validation-for="Person!.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Person!.IdCode" class="control-label"></label>
-                <input asp-for="Person!.IdCode" class="form-control" />
+                <input asp-for="Person!.IdCode" class="form-control" data-val-required="Isikukoodi väli on kohustuslik!"/>
                 <span asp-validation-for="Person!.IdCode" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Person!.AdditionalInfo" class="control-label"></label>
-                <input asp-for="Person!.AdditionalInfo" class="form-control" />
+                <input asp-for="Person!.AdditionalInfo" class="form-control"/>
                 <span asp-validation-for="Person!.AdditionalInfo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Person!.PaymentOptionId" class="control-label"></label>
-                <select asp-for="Person!.PaymentOptionId" class ="form-control" asp-items="@Model.PaymentOptionsSelectList"></select>
+                <select asp-for="Person!.PaymentOptionId" class="form-control" asp-items="@Model.PaymentOptionsSelectList"></select>
             </div>
             <input type="hidden" asp-for="Person!.EventId" value="@Model.Event.Id"/>
             <input type="hidden" asp-for="Person!.ParticipantCount" value="1"/>
             <div class="form-group">
-                <input type="submit" value="Lisa osaleja" class="btn btn-dark" />
+                <input type="submit" value="Lisa osaleja" class="btn btn-dark"/>
             </div>
         </form>
     </div>
@@ -51,5 +51,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

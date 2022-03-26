@@ -10,6 +10,8 @@ public class Business : Participant
     
     [MaxLength(16)]
     [Display(Name = "Registrikood")]
+    [RegularExpression("(^[1-9]{1}[0-9]{7}$)", 
+        ErrorMessage = "Ebakorrektne registrikood!")]
     public string RegisterCode { get; set; } = default!;
 
     [MaxLength(5000)]

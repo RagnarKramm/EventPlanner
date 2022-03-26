@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,9 +18,7 @@ namespace WebApp.Pages.Persons
             _context = context;
         }
 
-
-        [BindProperty]
-        public Person? Person { get; set; }
+        [BindProperty] public Person? Person { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -32,32 +26,30 @@ namespace WebApp.Pages.Persons
             {
                 return NotFound();
             }
-            PaymentOptionsSelectList = new SelectList(_context.PaymentOptions, nameof(PaymentOption.Id), nameof(PaymentOption.Name));
 
-            Person = await _context.Persons
-                .Include(p => p.Event)
-                .Include(p => p.PaymentOption).FirstOrDefaultAsync(m => m.Id == id);
+            PaymentOptionsSelectList = new SelectList(_context.PaymentOptions, nameof(PaymentOption.Id),
+                nameof(PaymentOption.Name));
+
+            Person = await _context.GetPersonById(id);
 
             if (Person == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            
+
             try
             {
                 await _context.EditPersonAsync(Person!);
-
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,7 +64,6 @@ namespace WebApp.Pages.Persons
             }
 
             return RedirectToPage("./Details", new {id = Person!.Id});
-
         }
 
         private bool PersonExists(int id)

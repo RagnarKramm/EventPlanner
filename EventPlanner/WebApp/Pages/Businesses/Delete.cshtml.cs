@@ -1,11 +1,5 @@
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
 
@@ -20,8 +14,7 @@ namespace WebApp.Pages.Businesses
             _context = context;
         }
 
-        [BindProperty]
-        public Business? Business { get; set; }
+        [BindProperty] public Business? Business { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,14 +23,13 @@ namespace WebApp.Pages.Businesses
                 return NotFound();
             }
 
-            Business = await _context.Businesses
-                .Include(b => b.Event)
-                .Include(b => b.PaymentOption).FirstOrDefaultAsync(m => m.Id == id);
+            Business = await _context.GetBusinessById(id);
 
             if (Business == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
 
@@ -47,8 +39,8 @@ namespace WebApp.Pages.Businesses
             {
                 await _context.DeleteBusinessAsync(id);
             }
-            
-            return RedirectToPage("/Events/Details", new{ id = Business?.EventId });
+
+            return RedirectToPage("/Events/Details", new {id = Business?.EventId});
         }
     }
 }

@@ -10,7 +10,7 @@
 <h3>Kas sa oled kindel, et tahad ürituse '@Model.Event!.Name' kustutada?</h3>
 <div>
     <h4>@Model.Event!.Name</h4>
-    <hr />
+    <hr/>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Event!.Name)
@@ -37,10 +37,10 @@
             @Html.DisplayFor(model => model.Event!.Description)
         </dd>
     </dl>
-    
+
     <form method="post">
-        <input type="hidden" asp-for="Event!.Id" />
-        <input type="submit" value="Kustuta" class="btn btn-danger" /> |
+        <input type="hidden" asp-for="Event!.Id"/>
         <a class="btn btn-outline-dark" asp-page="/Index">Tagasi</a>
+        <input type="submit" value="Kustuta" class="btn btn-danger"/>
     </form>
 </div>

@@ -1,11 +1,5 @@
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.DAL;
 using WebApp.Domain;
@@ -15,16 +9,15 @@ namespace WebApp.Pages.Events
     public class EditModel : PageModel
     {
         private readonly AppDbContext _context;
-        
-        public string ErrorMessage { get; set; } = default!;
+
+        public string ErrorMessage { get; private set; } = default!;
 
         public EditModel(AppDbContext context)
         {
             _context = context;
         }
 
-        [BindProperty]
-        public Event? Event { get; set; }
+        [BindProperty] public Event? Event { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -33,30 +26,29 @@ namespace WebApp.Pages.Events
                 return NotFound();
             }
 
-            Event = await _context.Events.FirstOrDefaultAsync(m => m.Id == id);
+            Event = await _context.GetEventById(id);
 
             if (Event == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            
+
             if (Event!.HappeningAt.CompareTo(DateTime.Now) < 0)
             {
                 ErrorMessage = "Valitud aeg on minevikus, palun valige aeg mis on veel tulemas!";
                 return Page();
             }
-            
+
             try
             {
                 await _context.EditEventAsync(Event);

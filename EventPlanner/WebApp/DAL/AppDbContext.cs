@@ -57,12 +57,19 @@ public class AppDbContext : DbContext
         }
     }
     
-    public virtual async Task<List<Business>> GetBusinessAsync()
+    public virtual async Task<List<Business>> GetBusinessesAsync()
     {
         return await Businesses
             .ToListAsync();
     }
     
+    public virtual async Task<Business?> GetBusinessById(int? id)
+    {
+        return await Businesses
+            .Include(b => b.Event)
+            .Include(b => b.PaymentOption).FirstOrDefaultAsync(m => m.Id == id);
+    }
+
     public virtual async Task<List<Business>> GetBusinessesForEventAsync(int? id)
     {
         return await Businesses.Where(b => b.EventId == id)
@@ -97,6 +104,13 @@ public class AppDbContext : DbContext
     {
         return await Persons
             .ToListAsync();
+    }
+    
+    public virtual async Task<Person?> GetPersonById(int? id)
+    {
+        return await Persons
+            .Include(p => p.Event)
+            .Include(p => p.PaymentOption).FirstOrDefaultAsync(m => m.Id == id);
     }
 
     public virtual async Task<List<Person>> GetPersonsForEventAsync(int? id)

@@ -9,54 +9,54 @@
 
 <div>
     <h4>Eraisik</h4>
-    <hr />
+    <hr/>
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Person.FirstName)
+            @Html.DisplayNameFor(model => model.Person!.FirstName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Person.FirstName)
+            @Html.DisplayFor(model => model.Person!.FirstName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Person.LastName)
+            @Html.DisplayNameFor(model => model.Person!.LastName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Person.LastName)
+            @Html.DisplayFor(model => model.Person!.LastName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Person.IdCode)
+            @Html.DisplayNameFor(model => model.Person!.IdCode)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Person.IdCode)
+            @Html.DisplayFor(model => model.Person!.IdCode)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Person.AdditionalInfo)
+            @Html.DisplayNameFor(model => model.Person!.AdditionalInfo)
         </dt>
         <dd class="col-sm-10">
-            @if (Model.Person.AdditionalInfo == null)
+            @if (Model.Person!.AdditionalInfo == null)
             {
                 <div>Puudub!</div>
             }
             else
             {
-                @Html.DisplayFor(model => model.Person.AdditionalInfo)
+                @Html.DisplayFor(model => model.Person!.AdditionalInfo)
             }
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Person.PaymentOptionId)
+            @Html.DisplayNameFor(model => model.Person!.PaymentOptionId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Person.PaymentOption!.Name)
+            @Html.DisplayFor(model => model.Person!.PaymentOption!.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Person.EventId)
+            @Html.DisplayNameFor(model => model.Person!.EventId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Person.Event!.Name)
+            @Html.DisplayFor(model => model.Person!.Event!.Name)
         </dd>
     </dl>
 </div>
 <div>
-    <a class="btn btn-outline-dark" asp-page="/Events/Details" asp-route-id="@Model.Person.EventId">Tagasi</a>
-    <a class="btn btn-outline-dark" asp-page="./Edit" asp-route-id="@Model.Person.Id">Muuda</a>
+    <a class="btn btn-outline-dark" asp-page="/Events/Details" asp-route-id="@Model.Person!.EventId">Tagasi</a>
+    <a class="btn btn-outline-dark" asp-page="./Edit" asp-route-id="@Model.Person!.Id">Muuda</a>
 </div>

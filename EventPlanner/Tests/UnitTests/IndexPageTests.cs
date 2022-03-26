@@ -31,7 +31,7 @@ public class IndexPageTests
     }
 
     [Fact]
-    public async Task IsTimeInFutureTest()
+    public void IsTimeInFutureTest()
     {
         // Assign
         var futureTime = DateTime.Now.AddHours(21);
